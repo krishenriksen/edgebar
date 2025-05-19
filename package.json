@@ -1,0 +1,22 @@
+{
+  "name": "edgebar-monorepo",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm run -r build",
+    "dev": "pnpm run --filter edgebar build && pnpm run --parallel dev",
+    "dev:local": "pnpm run --filter edgebar build && pnpm run --parallel dev:local",
+    "format": "prettier --write . && pnpm run -r format",
+    "lint": "prettier --check . && pnpm run -r lint"
+  },
+  "packageManager": "pnpm@10.11.0",
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "dependencies": {
+    "edgebar": "link:../.local/share/pnpm/global/5/node_modules/edgebar"
+  }
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Transparent Background -->
+  <rect width="256" height="256" fill="none" />
+  
+  <!-- Centered and Bigger Top Bar -->
+  <rect x="16" y="108" width="224" height="40" rx="20" fill="#f0f0f5" />
+  
+  <!-- Centered and Bigger Menu Items -->
+  <circle cx="48" cy="128" r="10" fill="rgb(0 0 0 / 90%)" />
+  <circle cx="80" cy="128" r="10" fill="rgb(0 0 0 / 90%)" />
+  <circle cx="112" cy="128" r="10" fill="rgb(0 0 0 / 90%)" />
+</svg>

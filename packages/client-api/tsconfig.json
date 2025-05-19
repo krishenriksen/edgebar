@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "outDir": "dist",
+    "composite": false,
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "lib": ["es2023", "dom"]
+  },
+  "exclude": ["dist"]
+}

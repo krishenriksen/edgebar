@@ -1,0 +1,114 @@
+@font-face{
+  font-family:'NerdFontsSymbols Nerd Font';
+  src:url("./assets/Symbols-2048-em Nerd Font Complete.woff2") format("woff2");
+  font-weight:normal;
+  font-style:normal
+}
+
+.nf {
+  font-family:'NerdFontsSymbols Nerd Font';
+  font-style:normal;
+  font-weight:normal;
+  font-variant:normal;
+  text-transform:none;
+  line-height:1;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.nf-md-apple_keyboard_option:before{content:"\f0635"}
+.nf-md-apple_keyboard_command:before{content:"\f0633"}
+.nf-md-apple_keyboard_shift:before{content:"\f0636"}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  color: rgb(0 0 0 / 90%);
+  background-color: transparent;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  user-select: none;
+}
+
+ul.dropdown {
+  margin: 5px 0 0 0;
+  padding: 0;
+}
+
+ul.dropdown li {
+  margin: 0;
+  padding: 2px 10px 2px 10px;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+
+ul.dropdown li.spacer {
+  margin: 5px 9px 1px 9px;
+  border-top: 1px solid rgba(214, 214, 214, 1);
+}
+
+ul.dropdown li button {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.25);
+  border: 0;
+  text-align: left;
+  color: inherit;
+  background: none;
+  flex: 1;
+  user-select: none;
+}
+
+ul.dropdown li.disabled button {
+  color: #a8a8a8;
+  pointer-events: none;
+  text-shadow: none;
+}
+
+ul.dropdown li:not(ul.dropdown li.spacer):not(ul.dropdown li.disabled):hover {
+  color: #ffffff;
+  background-color: #007aff;
+  border-radius: 4px;
+}
+
+ul.dropdown li:not(ul.dropdown li.spacer):not(ul.dropdown li.disabled):hover i,
+ul.dropdown li:not(ul.dropdown li.spacer):not(ul.dropdown li.disabled):hover span {
+  color: inherit;
+}
+
+ul.dropdown li i {
+  color: rgba(128, 128, 128, 60%);
+  font-size: 11px;
+  cursor: pointer;
+  user-select: none;
+}
+
+ul.dropdown li i::before {
+  margin: 3px 5px 0 0;
+  float: left;
+}
+
+ul.dropdown li span {
+  color: rgba(128, 128, 128, 60%);
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  user-select: none;
+}
+
+ul.dropdown li span.badge {
+  padding: 1px 10px 2px 10px;
+  font-size: 12px;
+  font-style: normal;
+  color: rgb(0 0 0 / 90%);
+  background-color: #d6d6d6;  
+  border-radius: 12px;
+  text-shadow: none;
+}

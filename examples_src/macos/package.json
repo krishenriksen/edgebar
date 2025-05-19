@@ -1,0 +1,19 @@
+{
+  "name": "macos",
+  "version": "0.0.1",
+  "description": "macOS top bar for Windows 11",
+  "scripts": {
+    "build": "vite build && ./build.sh",
+    "dev": "vite build --watch"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.5.0",
+    "@tauri-apps/cli": "2.5.0",
+    "solid-js": "^1.9.7"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-solid": "^2.11.6"
+  }
+}

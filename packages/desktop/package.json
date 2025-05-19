@@ -1,0 +1,19 @@
+{
+  "name": "@edgebar/desktop",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "npm run tauri build -- --verbose --target x86_64-pc-windows-gnu",
+    "dev": "npm run tauri dev -- -- -- startup --config-dir=../../examples",
+    "dev:local": "npm run tauri dev -- -- -- startup",
+    "format": "cargo fmt",
+    "lint": "cargo fmt --check",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.5.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.5.0",
+    "typescript": "5.8.3"
+  }
+}

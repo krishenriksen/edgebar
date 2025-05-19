@@ -1,0 +1,21 @@
+[package]
+name = "menu-util"
+version = "0.0.1"
+authors = ["Kris Henriksen"]
+description = "A library for Windows 11 for creating dropdown menus."
+license = "MIT"
+repository = "https://github.com/krishenriksen/edgebar"
+edition = "2024"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+serde = { workspace = true }
+anyhow = "1.0.98"
+tauri = "2.5.1"
+serde_json.workspace = true
+tokio.workspace = true
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { workspace = true }

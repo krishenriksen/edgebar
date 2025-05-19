@@ -1,0 +1,49 @@
+[package]
+name = "edgebar"
+version = "0.0.1"
+description = "EdgeBar is a tool for creating customizable and cross-platform taskbars, desktop widgets, and popups."
+authors = ["you"]
+license = ""
+repository = ""
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+anyhow = "1.0.98"
+async-trait = "0.1"
+base64 = "0.22"
+clap = { version = "4", features = ["derive"] }
+crossbeam = "0.8"
+netdev = "0.24"
+nvml-wrapper = "0.10.0"
+regex = "1"
+reqwest = { version = "0.11", features = ["json"] }
+rocket = { version = "0.5", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+shell-util = { path = "../../crates/shell-util" }
+starship-battery = "0.8"
+sysinfo = "0.30"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { workspace = true }
+tauri = { version = "2.5.1", features = ["devtools", "protocol-asset", "tray-icon"] }
+tauri-plugin-dialog = "2.2.1"
+tauri-plugin-single-instance = "2.2.3"
+serde_json.workspace = true
+
+[target.'cfg(target_os = "windows")'.dependencies]
+systray-util = { path = "../../crates/systray-util" }
+window-util = { path = "../../crates/window-util" }
+menu-util = { path = "../../crates/menu-util" }
+windows-core = { workspace = true }
+windows = { workspace = true }
+
+[features]
+# This feature is used for production builds or when `devPath` points to the
+# filesystem. Do not remove!
+custom-protocol = []

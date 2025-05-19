@@ -1,0 +1,172 @@
+@font-face{
+  font-family:'NerdFontsSymbols Nerd Font';
+  src:url("./assets/Symbols-2048-em Nerd Font Complete.woff2") format("woff2");
+  font-weight:normal;
+  font-style:normal
+}
+
+.nf {
+  font-family:'NerdFontsSymbols Nerd Font';
+  font-style:normal;
+  font-weight:normal;
+  font-variant:normal;
+  text-transform:none;
+  line-height:1;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.nf-fa-windows:before{content:"\f17a"}
+.nf-fa-volume_xmark:before{content:"\eee8"}
+.nf-fa-volume_low:before{content:"\f027"}
+.nf-fa-volume_high:before{content:"\f028"}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: rgb(0 0 0 / 90%);
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  user-select: none;
+}
+
+#root {
+  background-color: #f0f0f5;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+#root {
+  height: 100%;
+}
+
+.app {
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.left,
+.right {
+  height: 100%;
+  align-items: center;
+  display: flex;
+}
+
+ul {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  display: flex;
+}
+
+ul li {
+  height: 100%;
+  align-items: center;
+  box-shadow: none;
+  display: inline-flex;
+}
+
+.left ul > li button.nf-fa-windows {
+  padding-left: 20px;
+  font-size: 17px;
+}
+
+.left ul > li:nth-child(2) button {
+  font-weight: bold;
+  text-shadow: none;
+}
+
+ul li button.active:not(.volume-container.active) {
+  background-color: #d6d6d6;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.right ul > li:last-child button {
+  margin-right: 10px;
+  font-weight: normal;
+  text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.25);
+}
+
+button,
+input,
+.systray-icon {
+  height: 100%;
+  margin: 0;
+  padding: 0 10px 0 10px;
+  border: 0;
+  background: none;
+  text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.25);
+}
+
+.systray-icon:hover,
+.date:focus {
+  background-color: #d6d6d6;
+  border-radius: 4px;
+}
+
+.systray-icon img {
+  height: 19px;
+  object-fit: contain;
+  filter: grayscale(50%);
+}
+
+.high-usage {
+  color: #ff0000;
+}
+
+/* Styles for input range slider to mimic MacOS Monterey volume slider */
+button.volume {
+  font-size: 20px;
+}
+
+input[type='range'] {
+  height: 15px;
+  background: transparent;
+  border-radius: 50px;
+  overflow: hidden;
+  -webkit-appearance: none;
+  appearance: none;
+  vertical-align: middle;
+  display: none;
+}
+
+input[type='range'].active {
+  flex-grow: 1;
+  display: inline-block;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  height: 15px;
+  background: #d6d2d3;
+  border-radius: 16px;
+  border: 1px solid #bcb9ba;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -1px;
+  background: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 50%;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: -407px 0 0 400px #ffffff;
+  transition: background 0.2s ease;
+}
+
+input[type='range']::-webkit-slider-thumb:hover,
+input[type='range']:active::-webkit-slider-thumb,
+input[type='range']:focus::-webkit-slider-thumb {
+  background-color: #f0f0f0;
+}
