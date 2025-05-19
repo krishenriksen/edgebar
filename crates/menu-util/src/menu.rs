@@ -1,11 +1,8 @@
 use tokio::task;
-#[allow(unused_imports)]
 use windows::Win32::{
     Foundation::HWND,
-    UI::{
-        WindowsAndMessaging::{
-          SetForegroundWindow, SetWindowLongPtrW, GWL_EXSTYLE, WS_EX_TOOLWINDOW
-        },
+    UI::WindowsAndMessaging::{
+        SetWindowLongPtrW, GWL_EXSTYLE, WS_EX_TOOLWINDOW
     },
 };
 
