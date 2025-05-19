@@ -9,17 +9,6 @@
 
 **Downloads for Windows 11 are available in the [latest release](https://github.com/krishenriksen/edgebar/releases)**.
 
-## Usage
-
-```bash
-$ npm install
-$ npm run build
-```
-
-Shell privileges requires the following:
-
-`powershell`
-
 # Requirements
 
 ## windhawk
