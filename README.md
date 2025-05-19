@@ -1,8 +1,7 @@
 <div align="center">
 
 # macOS top bar for Windows 11
-
-[![Low system resources macOS theme for Windows 11](https://i.ytimg.com/vi/DdTJlD7R1Wg/maxresdefault.jpg)](https://youtu.be/DdTJlD7R1Wg)
+[![Low system resources macOS theme for Windows 11](https://github.com/user-attachments/assets/4c042cac-caca-4a58-b5e2-26f8f77d8ac7)](https://youtu.be/DdTJlD7R1Wg)
 </div>
 
 ## ⚙️ Installation
