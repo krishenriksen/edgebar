@@ -35,8 +35,6 @@ tauri = { version = "2.5.1", features = ["devtools", "protocol-asset", "tray-ico
 tauri-plugin-dialog = "2.2.1"
 tauri-plugin-single-instance = "2.2.3"
 serde_json.workspace = true
-
-[target.'cfg(target_os = "windows")'.dependencies]
 systray-util = { path = "../../crates/systray-util" }
 window-util = { path = "../../crates/window-util" }
 menu-util = { path = "../../crates/menu-util" }

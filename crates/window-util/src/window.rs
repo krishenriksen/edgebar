@@ -171,9 +171,9 @@ unsafe extern "system" fn event_callback(
     _: u32,
 ) {
     // Retrieve the window title
-    let length = GetWindowTextLengthW(hwnd) + 1;
+    let length = unsafe { GetWindowTextLengthW(hwnd) } + 1;
     let mut buffer = vec![0u16; length as usize];
-    let copied_length = GetWindowTextW(hwnd, &mut buffer);
+    let copied_length = unsafe { GetWindowTextW(hwnd, &mut buffer) };
 
     if copied_length > 0 {
         let window_title = String::from_utf16_lossy(&buffer[..copied_length as usize]);
