@@ -17,7 +17,7 @@ export function createSystrayProvider(
 ): SystrayProvider {
   const mergedConfig = systrayProviderConfigSchema.parse(config);
 
-  return createBaseProvider(mergedConfig, async queue => {
+  return createBaseProvider(mergedConfig, async (queue) => {
     return onProviderEmit<SystrayOutput>(
       mergedConfig,
       ({ configHash, result }) => {
@@ -26,7 +26,7 @@ export function createSystrayProvider(
         } else {
           queue.output({
             ...result.output,
-            icons: result.output.icons.map(icon => {
+            icons: result.output.icons.map((icon) => {
               const iconBlob = new Blob([new Uint8Array(icon.iconBytes)], {
                 type: 'image/png',
               });

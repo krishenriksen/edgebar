@@ -314,7 +314,7 @@ impl Shell {
         Ok(status) => ChildProcessEvent::Terminated(ExitStatus {
           code: status.code(),
           success: status.code().is_some_and(|code| code == 0),
-          signal: None
+          signal: None,
         }),
         Err(err) => ChildProcessEvent::Error(err.to_string()),
       };

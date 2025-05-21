@@ -5,7 +5,7 @@ macro_rules! debug_info {
 }
 #[cfg(not(debug_assertions))]
 macro_rules! debug_info {
-    ($($arg:tt)*) => {};
+  ($($arg:tt)*) => {};
 }
 
 use std::{

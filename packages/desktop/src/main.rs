@@ -57,7 +57,7 @@ async fn main() -> anyhow::Result<()> {
       // Initialize the menu window
       let app_handle = app.handle();
       if let Err(err) = initialize_menu_window(&app_handle) {
-          eprintln!("Failed to initialize menu: {}", err);
+        eprintln!("Failed to initialize menu: {}", err);
       }
 
       task::block_in_place(|| {

@@ -29,19 +29,19 @@ impl PathExt for PathBuf {
 
     // On Windows, the canonicalized path may have a UNC prefix (\\?\).
     let should_strip_unc = match canonicalized.components().next() {
-    Some(Component::Prefix(prefix)) => match prefix.kind() {
+      Some(Component::Prefix(prefix)) => match prefix.kind() {
         Prefix::VerbatimDisk(_) => true,
         _ => false,
-    },
-    _ => false,
+      },
+      _ => false,
     };
 
     let formatted = match should_strip_unc {
-    true => canonicalized
+      true => canonicalized
         .to_str()
         .and_then(|path| path.get(4..))
         .map_or(canonicalized.clone(), PathBuf::from),
-    false => canonicalized,
+      false => canonicalized,
     };
 
     Ok(formatted)

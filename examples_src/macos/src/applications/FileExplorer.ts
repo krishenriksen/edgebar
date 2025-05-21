@@ -110,7 +110,7 @@ const menuItems = [
         name: 'Go to Folder...',
         action: 'start $HOME',
         icon: 'nf-md-apple_keyboard_command',
-        key: 'N',        
+        key: 'N',
       },
       { name: 'Connect to Server...', action: 'start $HOME' },
     ],

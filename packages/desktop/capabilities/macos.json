@@ -3,7 +3,5 @@
   "identifier": "macos",
   "description": "Menu capabilities",
   "windows": ["macos"],
-  "permissions": [
-    "core:event:default"
-  ]
+  "permissions": ["core:event:default"]
 }

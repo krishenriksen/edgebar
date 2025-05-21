@@ -1,11 +1,11 @@
 [package]
 name = "edgebar"
 version = "0.0.1"
-description = "EdgeBar is a tool for creating customizable and cross-platform taskbars, desktop widgets, and popups."
+description = "EdgeBar"
 authors = ["you"]
 license = ""
 repository = ""
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

@@ -4,7 +4,7 @@ macro_rules! debug_info {
 }
 #[cfg(not(debug_assertions))]
 macro_rules! debug_info {
-    ($($arg:tt)*) => {};
+  ($($arg:tt)*) => {};
 }
 
 use std::{os::raw::c_void, sync::OnceLock, thread::JoinHandle};

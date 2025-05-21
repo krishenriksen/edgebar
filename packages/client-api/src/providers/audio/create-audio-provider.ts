@@ -18,7 +18,7 @@ export function createAudioProvider(
 ): AudioProvider {
   const mergedConfig = audioProviderConfigSchema.parse(config);
 
-  return createBaseProvider(mergedConfig, async queue => {
+  return createBaseProvider(mergedConfig, async (queue) => {
     return onProviderEmit<AudioOutput>(
       mergedConfig,
       ({ configHash, result }) => {

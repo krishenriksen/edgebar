@@ -1,24 +1,30 @@
-@font-face{
-  font-family:'NerdFontsSymbols Nerd Font';
-  src:url("./assets/Symbols-2048-em Nerd Font Complete.woff2") format("woff2");
-  font-weight:normal;
-  font-style:normal
+@font-face {
+  font-family: "NerdFontsSymbols Nerd Font";
+  src: url("./assets/Symbols-2048-em Nerd Font Complete.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 .nf {
-  font-family:'NerdFontsSymbols Nerd Font';
-  font-style:normal;
-  font-weight:normal;
-  font-variant:normal;
-  text-transform:none;
-  line-height:1;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  font-family: "NerdFontsSymbols Nerd Font";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.nf-md-apple_keyboard_option:before{content:"\f0635"}
-.nf-md-apple_keyboard_command:before{content:"\f0633"}
-.nf-md-apple_keyboard_shift:before{content:"\f0636"}
+.nf-md-apple_keyboard_option:before {
+  content: "\f0635";
+}
+.nf-md-apple_keyboard_command:before {
+  content: "\f0633";
+}
+.nf-md-apple_keyboard_shift:before {
+  content: "\f0636";
+}
 
 html,
 body {
@@ -26,7 +32,7 @@ body {
   padding: 0;
   color: rgb(0 0 0 / 90%);
   background-color: transparent;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.25);
   overflow: hidden;
@@ -56,7 +62,7 @@ ul.dropdown li button {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.25);
   border: 0;
@@ -80,7 +86,9 @@ ul.dropdown li:not(ul.dropdown li.spacer):not(ul.dropdown li.disabled):hover {
 }
 
 ul.dropdown li:not(ul.dropdown li.spacer):not(ul.dropdown li.disabled):hover i,
-ul.dropdown li:not(ul.dropdown li.spacer):not(ul.dropdown li.disabled):hover span {
+ul.dropdown
+  li:not(ul.dropdown li.spacer):not(ul.dropdown li.disabled):hover
+  span {
   color: inherit;
 }
 
@@ -98,7 +106,7 @@ ul.dropdown li i::before {
 
 ul.dropdown li span {
   color: rgba(128, 128, 128, 60%);
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   user-select: none;
 }
@@ -108,7 +116,7 @@ ul.dropdown li span.badge {
   font-size: 12px;
   font-style: normal;
   color: rgb(0 0 0 / 90%);
-  background-color: #d6d6d6;  
+  background-color: #d6d6d6;
   border-radius: 12px;
   text-shadow: none;
 }

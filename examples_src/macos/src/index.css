@@ -1,25 +1,33 @@
-@font-face{
-  font-family:'NerdFontsSymbols Nerd Font';
-  src:url("./assets/Symbols-2048-em Nerd Font Complete.woff2") format("woff2");
-  font-weight:normal;
-  font-style:normal
+@font-face {
+  font-family: "NerdFontsSymbols Nerd Font";
+  src: url("./assets/Symbols-2048-em Nerd Font Complete.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 .nf {
-  font-family:'NerdFontsSymbols Nerd Font';
-  font-style:normal;
-  font-weight:normal;
-  font-variant:normal;
-  text-transform:none;
-  line-height:1;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  font-family: "NerdFontsSymbols Nerd Font";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.nf-fa-windows:before{content:"\f17a"}
-.nf-fa-volume_xmark:before{content:"\eee8"}
-.nf-fa-volume_low:before{content:"\f027"}
-.nf-fa-volume_high:before{content:"\f028"}
+.nf-fa-windows:before {
+  content: "\f17a";
+}
+.nf-fa-volume_xmark:before {
+  content: "\eee8";
+}
+.nf-fa-volume_low:before {
+  content: "\f027";
+}
+.nf-fa-volume_high:before {
+  content: "\f028";
+}
 
 html,
 body {
@@ -27,7 +35,7 @@ body {
   margin: 0;
   padding: 0;
   color: rgb(0 0 0 / 90%);
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.25);
   overflow: hidden;
@@ -129,7 +137,7 @@ button.volume {
   font-size: 20px;
 }
 
-input[type='range'] {
+input[type="range"] {
   height: 15px;
   background: transparent;
   border-radius: 50px;
@@ -140,19 +148,19 @@ input[type='range'] {
   display: none;
 }
 
-input[type='range'].active {
+input[type="range"].active {
   flex-grow: 1;
   display: inline-block;
 }
 
-input[type='range']::-webkit-slider-runnable-track {
+input[type="range"]::-webkit-slider-runnable-track {
   height: 15px;
   background: #d6d2d3;
   border-radius: 16px;
   border: 1px solid #bcb9ba;
 }
 
-input[type='range']::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
   width: 16px;
   height: 16px;
   margin-top: -1px;
@@ -165,8 +173,8 @@ input[type='range']::-webkit-slider-thumb {
   transition: background 0.2s ease;
 }
 
-input[type='range']::-webkit-slider-thumb:hover,
-input[type='range']:active::-webkit-slider-thumb,
-input[type='range']:focus::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb:hover,
+input[type="range"]:active::-webkit-slider-thumb,
+input[type="range"]:focus::-webkit-slider-thumb {
   background-color: #f0f0f0;
 }

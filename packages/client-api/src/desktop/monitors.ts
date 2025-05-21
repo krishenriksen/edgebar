@@ -59,7 +59,7 @@ async function createMonitorCache() {
   ]);
 
   const secondaryMonitors = allMonitors.filter(
-    monitor => !primaryMonitor || !isMatch(monitor, primaryMonitor),
+    (monitor) => !primaryMonitor || !isMatch(monitor, primaryMonitor),
   );
 
   // TODO: Refetch on display setting changes. Create a store with the current

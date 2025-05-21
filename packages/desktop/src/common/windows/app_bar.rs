@@ -35,7 +35,7 @@ unsafe extern "system" fn new_wnd_proc(
   lparam: LPARAM,
 ) -> LRESULT {
   match msg {
-    msg if msg == CALLBACK_MESSAGE => {
+    msg if msg == unsafe { CALLBACK_MESSAGE } => {
       if wparam.0 == ABN_POSCHANGED as usize {
         info!("Received ABN_POSCHANGED message");
         // Call our function to update the appbar position
@@ -48,19 +48,25 @@ unsafe extern "system" fn new_wnd_proc(
         }
       }
       // Call the original window procedure to ensure default processing
-      if let Some(prev_wnd_proc) = PREV_WND_PROC {
-        CallWindowProcA(prev_wnd_proc, hwnd, msg, wparam, lparam)
-      } else {
-        DefWindowProcA(hwnd, msg, wparam, lparam)
-      }
+      let result = unsafe {
+        if let Some(prev_wnd_proc) = PREV_WND_PROC {
+          CallWindowProcA(prev_wnd_proc, hwnd, msg, wparam, lparam)
+        } else {
+          DefWindowProcA(hwnd, msg, wparam, lparam)
+        }
+      };
+      result
     }
     _ => {
       // For other messages, call the original window procedure
-      if let Some(prev_wnd_proc) = PREV_WND_PROC {
-        CallWindowProcA(prev_wnd_proc, hwnd, msg, wparam, lparam)
-      } else {
-        DefWindowProcA(hwnd, msg, wparam, lparam)
-      }
+      let result = unsafe {
+        if let Some(prev_wnd_proc) = PREV_WND_PROC {
+          CallWindowProcA(prev_wnd_proc, hwnd, msg, wparam, lparam)
+        } else {
+          DefWindowProcA(hwnd, msg, wparam, lparam)
+        }
+      };
+      result
     }
   }
 }

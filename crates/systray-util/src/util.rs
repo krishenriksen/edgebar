@@ -4,7 +4,7 @@ macro_rules! debug_info {
 }
 #[cfg(not(debug_assertions))]
 macro_rules! debug_info {
-    ($($arg:tt)*) => {};
+  ($($arg:tt)*) => {};
 }
 
 use std::{os::windows::io::AsRawHandle, ptr::addr_of_mut, thread::JoinHandle};
@@ -243,36 +243,36 @@ impl Util {
     let sample_height = 10.min(height_usize);
     let mut all_white = true;
     for y in 0..sample_height {
-        for x in 0..sample_width {
-            let offset = (y * width_usize + x) * 4;
-            let (r, g, b, a) = (
-                color_buffer[offset],
-                color_buffer[offset + 1],
-                color_buffer[offset + 2],
-                color_buffer[offset + 3],
-            );
-            // Consider a pixel white if its RGB channels are near 255.
-            if a > 0 && (r < 250 || g < 250 || b < 250) {
-                all_white = false;
-                break;
-            }
+      for x in 0..sample_width {
+        let offset = (y * width_usize + x) * 4;
+        let (r, g, b, a) = (
+          color_buffer[offset],
+          color_buffer[offset + 1],
+          color_buffer[offset + 2],
+          color_buffer[offset + 3],
+        );
+        // Consider a pixel white if its RGB channels are near 255.
+        if a > 0 && (r < 250 || g < 250 || b < 250) {
+          all_white = false;
+          break;
         }
-        if !all_white {
-            break;
-        }
+      }
+      if !all_white {
+        break;
+      }
     }
     if all_white {
-        // Replace all white pixels with black.
-        for chunk in color_buffer.chunks_exact_mut(4) {
-            let (r, g, b, a) = (chunk[0], chunk[1], chunk[2], chunk[3]);
-            if a > 0 && r > 240 && g > 240 && b > 240 {
-                chunk[0] = 0;
-                chunk[1] = 0;
-                chunk[2] = 0;
-            }
+      // Replace all white pixels with black.
+      for chunk in color_buffer.chunks_exact_mut(4) {
+        let (r, g, b, a) = (chunk[0], chunk[1], chunk[2], chunk[3]);
+        if a > 0 && r > 240 && g > 240 && b > 240 {
+          chunk[0] = 0;
+          chunk[1] = 0;
+          chunk[2] = 0;
         }
+      }
     }
-    // --- End new logic ---    
+    // --- End new logic ---
 
     RgbaImage::from_vec(width_u32, height_u32, color_buffer)
       .ok_or(crate::Error::IconConversionFailed)

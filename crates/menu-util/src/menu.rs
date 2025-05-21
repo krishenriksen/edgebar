@@ -1,39 +1,32 @@
 use tokio::task;
 use windows::Win32::{
-    Foundation::HWND,
-    UI::WindowsAndMessaging::{
-        SetWindowLongPtrW, GWL_EXSTYLE, WS_EX_TOOLWINDOW
-    },
+  Foundation::HWND,
+  UI::WindowsAndMessaging::{GWL_EXSTYLE, SetWindowLongPtrW, WS_EX_TOOLWINDOW},
 };
 
-use tauri::{
-  AppHandle, WebviewWindowBuilder, WebviewUrl, Manager, Emitter
-};
+use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
 
+use serde::Deserialize;
 use serde_json::Value;
 use std::collections::HashMap;
-use serde::Deserialize;
 
-pub fn initialize_menu_window(app_handle: &AppHandle) -> anyhow::Result<()> { 
+pub fn initialize_menu_window(app_handle: &AppHandle) -> anyhow::Result<()> {
   if app_handle.get_webview_window("macos").is_none() {
     let app_handle_clone = app_handle.clone(); // Clone the app_handle for the async task
     // Use a separate thread for window creation. This is crucial.
     task::spawn(async move {
-      let window_result = WebviewWindowBuilder::new(
-        &app_handle_clone,
-        "macos",
-        WebviewUrl::App("/".into()),
-      )
-      .title("Dropdown - EdgeBar") // Include EdgeBar in the title so it can be ignored in the event callback
-      .focused(true)
-      .visible(false)
-      .position(0.0, 35.0)
-      .inner_size(10.0, 10.0)
-      .resizable(false)
-      .decorations(false)
-      .skip_taskbar(true)
-      .always_on_top(true)
-      .build();
+      let window_result =
+        WebviewWindowBuilder::new(&app_handle_clone, "macos", WebviewUrl::App("/".into()))
+          .title("Dropdown - EdgeBar") // Include EdgeBar in the title so it can be ignored in the event callback
+          .focused(true)
+          .visible(false)
+          .position(0.0, 35.0)
+          .inner_size(10.0, 10.0)
+          .resizable(false)
+          .decorations(false)
+          .skip_taskbar(true)
+          .always_on_top(true)
+          .build();
 
       match window_result {
         Ok(window) => {
@@ -43,10 +36,10 @@ pub fn initialize_menu_window(app_handle: &AppHandle) -> anyhow::Result<()> {
               SetWindowLongPtrW(HWND(app_hwnd.0), GWL_EXSTYLE, WS_EX_TOOLWINDOW.0 as isize);
             }
           }
-        },
+        }
         Err(err) => {
           eprintln!("Failed to create window: {}", err);
-        },
+        }
       }
     });
 
@@ -58,16 +51,16 @@ pub fn initialize_menu_window(app_handle: &AppHandle) -> anyhow::Result<()> {
 
 #[derive(Deserialize)]
 pub struct MonitorPosition {
-    pub x: f64,
-    pub y: f64,
+  pub x: f64,
+  pub y: f64,
 }
 
 #[derive(Deserialize)]
 pub struct ButtonPosition {
-    pub x: f64,
-    pub y: f64,
-    pub width: f64,
-    pub height: f64,
+  pub x: f64,
+  pub y: f64,
+  pub width: f64,
+  pub height: f64,
 }
 
 pub fn show_menu(
@@ -99,7 +92,11 @@ pub fn show_menu(
   Ok(())
 }
 
-pub fn resize_menu(app_handle: &AppHandle, logical_width: f64, logical_height: f64) -> anyhow::Result<()> {
+pub fn resize_menu(
+  app_handle: &AppHandle,
+  logical_width: f64,
+  logical_height: f64,
+) -> anyhow::Result<()> {
   if let Some(existing_window) = app_handle.get_webview_window("macos") {
     existing_window.hide()?;
 
@@ -109,7 +106,10 @@ pub fn resize_menu(app_handle: &AppHandle, logical_width: f64, logical_height: f
     let physical_height = (logical_height * monitor_scale_factor).ceil() as u32;
 
     existing_window
-      .set_size(tauri::Size::Physical(tauri::PhysicalSize { width: physical_width, height: physical_height }))
+      .set_size(tauri::Size::Physical(tauri::PhysicalSize {
+        width: physical_width,
+        height: physical_height,
+      }))
       .map_err(|e| anyhow::anyhow!("Failed to set menu size: {}", e))?;
 
     existing_window.show()?;

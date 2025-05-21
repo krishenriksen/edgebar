@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 use super::{
-  audio::AudioProviderConfig, systray::SystrayProviderConfig, window::WindowProviderConfig
+  audio::AudioProviderConfig, systray::SystrayProviderConfig, window::WindowProviderConfig,
 };
 
 #[derive(Deserialize, Debug)]

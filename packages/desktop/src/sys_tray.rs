@@ -1,4 +1,4 @@
-use std::{str::FromStr};
+use std::str::FromStr;
 
 use anyhow::{bail, Context};
 use tauri::{
@@ -12,13 +12,13 @@ use tracing::{error, info};
 
 #[derive(Debug, Clone)]
 enum MenuEvent {
-  Exit
+  Exit,
 }
 
 impl ToString for MenuEvent {
   fn to_string(&self) -> String {
     match self {
-      MenuEvent::Exit => "exit".to_string()
+      MenuEvent::Exit => "exit".to_string(),
     }
   }
 }
@@ -44,9 +44,7 @@ pub struct SysTray {
 
 impl SysTray {
   /// Creates a new system tray icon for EdgeBar.
-  pub async fn new(
-    app_handle: &AppHandle,
-  ) -> anyhow::Result<SysTray> {
+  pub async fn new(app_handle: &AppHandle) -> anyhow::Result<SysTray> {
     let mut sys_tray = Self {
       app_handle: app_handle.clone(),
       tray_icon: None,
@@ -70,10 +68,7 @@ impl SysTray {
       .on_menu_event({
         move |app_handle, event| {
           if let Ok(menu_event) = MenuEvent::from_str(event.id.as_ref()) {
-            Self::handle_menu_event(
-              menu_event,
-              app_handle.clone()
-            );
+            Self::handle_menu_event(menu_event, app_handle.clone());
           }
         }
       });
@@ -111,10 +106,7 @@ impl SysTray {
   }
 
   /// Callback for system tray menu events.
-  fn handle_menu_event(
-    event: MenuEvent,
-    app_handle: AppHandle
-  ) {
+  fn handle_menu_event(event: MenuEvent, app_handle: AppHandle) {
     task::spawn(async move {
       info!("Received tray menu event: {:?}", event);
 

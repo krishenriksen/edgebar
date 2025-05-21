@@ -22,7 +22,10 @@ const menuItems = [
     items: [
       { name: 'New Tab', action: 'start firefox -ArgumentList "about:newtab"' },
       { name: 'New Window', action: 'start firefox' },
-      { name: 'New Private Window', action: 'start firefox -ArgumentList "-private-window"' },
+      {
+        name: 'New Private Window',
+        action: 'start firefox -ArgumentList "-private-window"',
+      },
       { name: 'Open File', action: '' },
       { name: 'spacer', action: '' },
       { name: 'Close Tab', action: '' },
@@ -55,7 +58,13 @@ const menuItems = [
   },
   {
     name: 'View',
-    items: [{ name: 'Enter Full Screen', action: 'Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait("{F11}")' }],
+    items: [
+      {
+        name: 'Enter Full Screen',
+        action:
+          'Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait("{F11}")',
+      },
+    ],
   },
   {
     name: 'History',
@@ -112,7 +121,7 @@ const menuItems = [
       { name: 'Zoom', action: '' },
       { name: 'Mozilla Firefox', action: '' },
     ],
-  },  
+  },
   {
     name: 'Help',
     items: [

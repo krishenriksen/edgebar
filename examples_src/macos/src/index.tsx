@@ -1,23 +1,23 @@
-import './index.css';
-import { render } from 'solid-js/web';
-import { createStore } from 'solid-js/store';
-import { createSignal, createEffect, createMemo } from 'solid-js';
-import { createProviderGroup, shellExec, showMenu, hideMenu } from 'edgebar';
-import { currentMonitor } from '@tauri-apps/api/window';
+import "./index.css";
+import { render } from "solid-js/web";
+import { createStore } from "solid-js/store";
+import { createSignal, createEffect, createMemo } from "solid-js";
+import { createProviderGroup, shellExec, showMenu, hideMenu } from "edgebar";
+import { currentMonitor } from "@tauri-apps/api/window";
 
 // Use Vite's import.meta.glob to import all files dynamically
-const modules = import.meta.glob('./applications/*.ts', { eager: true });
+const modules = import.meta.glob("./applications/*.ts", { eager: true });
 const Applications: Record<string, any> = {};
-Object.keys(modules).forEach(filePath => {
-  const moduleName = filePath.replace(/.*\/(.*)\.ts$/, '$1');
+Object.keys(modules).forEach((filePath) => {
+  const moduleName = filePath.replace(/.*\/(.*)\.ts$/, "$1");
   Applications[moduleName] = modules[filePath];
 });
 
 function App() {
   const providers = createProviderGroup({
-    audio: { type: 'audio' },
-    systray: { type: 'systray' },
-    window: { type: 'window' },
+    audio: { type: "audio" },
+    systray: { type: "systray" },
+    window: { type: "window" },
   });
 
   const [output, setOutput] = createStore(providers.outputMap);
@@ -34,7 +34,7 @@ function App() {
     key?: string | null;
     disabled?: boolean;
   };
-  
+
   type MenuGroup = {
     name: string;
     items: MenuItem[];
@@ -61,43 +61,41 @@ function App() {
   };
 
   const [isMenuVisible, setMenuVisible] = createSignal(false);
-  const [activeMenuName, setActiveMenuName] = createSignal<string | null>(
-    null,
-  );
-  const windowsModule = Applications['Windows'];
-  const fileExplorerModule = Applications['FileExplorer'];
-  const [appSpecificOptions, setAppSpecificOptions] = createSignal<DropdownOption[]>(
-    [
-      ...(windowsModule
-        ? windowsModule.menuItems.map((menuGroup: MenuGroup) => ({
-            name: menuGroup.name,
-            items: menuGroup.items.map((item: MenuItem) => ({
-              name: item.name,
-              action: item.action,
-              hwnd: 0,
-              icon: item.icon || null,
-              key: item.key || null,
-              disabled: item.disabled || false,
-            })),
-          }))
-        : []),
-      ...(fileExplorerModule
-        ? fileExplorerModule.menuItems.map((menuGroup: MenuGroup) => ({
-            name: menuGroup.name,
-            items: menuGroup.items.map((item: MenuItem) => ({
-              name: item.name,
-              action: item.action,
-              hwnd: 0,
-              icon: item.icon || null,
-              key: item.key || null,
-              disabled: item.disabled || false,
-            })),
-          }))
-        : []),
-    ],
-  );
-  const defaultTitle = 'File Explorer';
-  const replaceTitle = ['Program Manager'];
+  const [activeMenuName, setActiveMenuName] = createSignal<string | null>(null);
+  const windowsModule = Applications["Windows"];
+  const fileExplorerModule = Applications["FileExplorer"];
+  const [appSpecificOptions, setAppSpecificOptions] = createSignal<
+    DropdownOption[]
+  >([
+    ...(windowsModule
+      ? windowsModule.menuItems.map((menuGroup: MenuGroup) => ({
+          name: menuGroup.name,
+          items: menuGroup.items.map((item: MenuItem) => ({
+            name: item.name,
+            action: item.action,
+            hwnd: 0,
+            icon: item.icon || null,
+            key: item.key || null,
+            disabled: item.disabled || false,
+          })),
+        }))
+      : []),
+    ...(fileExplorerModule
+      ? fileExplorerModule.menuItems.map((menuGroup: MenuGroup) => ({
+          name: menuGroup.name,
+          items: menuGroup.items.map((item: MenuItem) => ({
+            name: item.name,
+            action: item.action,
+            hwnd: 0,
+            icon: item.icon || null,
+            key: item.key || null,
+            disabled: item.disabled || false,
+          })),
+        }))
+      : []),
+  ]);
+  const defaultTitle = "File Explorer";
+  const replaceTitle = ["Program Manager"];
 
   createEffect(async () => {
     let title = replaceTitle.includes(output.window?.title)
@@ -107,10 +105,10 @@ function App() {
     if (title && output.window?.hwnd) {
       // Extract the last part of the title or fallback to the full title
       title = title
-        .replace(' – ', ' - ') // En-dash
-        .replace(' — ', ' - ') // Em-dash
-        .split(' - ')
-        .filter((s: string) => s.trim() !== '')
+        .replace(" – ", " - ") // En-dash
+        .replace(" — ", " - ") // Em-dash
+        .split(" - ")
+        .filter((s: string) => s.trim() !== "")
         .pop()
         ?.trim();
 
@@ -124,10 +122,8 @@ function App() {
       let options: DropdownOption[] = [];
 
       // Check if the module exists in Applications
-      const module: ModuleType | undefined = Object.values(
-        Applications
-      ).find(mod => 
-        mod.applicationTitles && mod.applicationTitles.includes(title)
+      const module: ModuleType | undefined = Object.values(Applications).find(
+        (mod) => mod.applicationTitles && mod.applicationTitles.includes(title),
       );
 
       if (module) {
@@ -152,17 +148,14 @@ function App() {
       }
 
       // Update appSpecificOptions while preserving the Windows module at index 0
-      setAppSpecificOptions(prevOptions => {
+      setAppSpecificOptions((prevOptions) => {
         const firstOption = prevOptions[0];
         return [firstOption, ...options];
       });
     }
   });
 
-  const handleMenuInteraction = async (
-    e: MouseEvent,
-    items: MenuItem[],
-  ) => {
+  const handleMenuInteraction = async (e: MouseEvent, items: MenuItem[]) => {
     const target = e.currentTarget as HTMLButtonElement;
     const rect = target.getBoundingClientRect();
 
@@ -171,7 +164,7 @@ function App() {
     showMenu(
       items,
       { x: rect.left, y: rect.top, width: rect.width, height: rect.height },
-      monitorInfo?.position || { x: 0, y: 0 }
+      monitorInfo?.position || { x: 0, y: 0 },
     );
   };
 
@@ -203,7 +196,7 @@ function App() {
         if (!isVolumeHovered()) setVolumeVisible(false);
       }, 1000);
     }
-  };  
+  };
 
   const handleVolumeLeave = () => {
     setVolumeHovered(false);
@@ -244,14 +237,14 @@ function App() {
       return output.systray.icons
         .filter(
           (icon: SystrayIcon) =>
-            !icon.tooltip?.toLowerCase().includes('speakers') &&
-            !icon.tooltip?.toLowerCase().includes('edgebar')
+            !icon.tooltip?.toLowerCase().includes("speakers") &&
+            !icon.tooltip?.toLowerCase().includes("edgebar"),
         )
         .sort((a: SystrayIcon, b: SystrayIcon) => {
           const getPriority = (icon: SystrayIcon) => {
-            const tooltip = icon.tooltip?.toLowerCase() || '';
-            if (tooltip.includes('cpu core')) return 1;
-            if (tooltip.includes('gpu')) return 2;
+            const tooltip = icon.tooltip?.toLowerCase() || "";
+            if (tooltip.includes("cpu core")) return 1;
+            if (tooltip.includes("gpu")) return 2;
             return 99; // everything else gets a lower priority
           };
 
@@ -261,7 +254,7 @@ function App() {
           if (iconCache.has(icon.id)) {
             const cachedIcon = iconCache.get(icon.id);
             if (cachedIcon) {
-              const img = cachedIcon.element.querySelector('img');
+              const img = cachedIcon.element.querySelector("img");
               if (img) {
                 img.src = icon.iconUrl;
                 img.title = icon.tooltip;
@@ -281,10 +274,7 @@ function App() {
                   output.systray?.onRightClick(icon.id);
                 }}
               >
-                <img
-                  src={icon.iconUrl}
-                  title={icon.tooltip}
-                />
+                <img src={icon.iconUrl} title={icon.tooltip} />
               </li>
             );
 
@@ -309,9 +299,13 @@ function App() {
 
   const formatShortDate = (date: Date): string => {
     // Build the date part manually to enforce the order "weekday day month"
-    const weekday = new Intl.DateTimeFormat(navigator.language, { weekday: 'short' }).format(date);
+    const weekday = new Intl.DateTimeFormat(navigator.language, {
+      weekday: "short",
+    }).format(date);
     const day = date.getDate();
-    const month = new Intl.DateTimeFormat(navigator.language, { month: 'short' }).format(date);
+    const month = new Intl.DateTimeFormat(navigator.language, {
+      month: "short",
+    }).format(date);
     const datePart = `${weekday} ${day} ${month}`;
 
     // Format time in 24-hour format.
@@ -322,20 +316,22 @@ function App() {
     const timePart = `${hourStr}:${minuteStr}`;
 
     // Use a better padding character (e.g., two em-spaces)
-    const padding = '\u2002';
+    const padding = "\u2002";
     return `${datePart}${padding}${timePart}`;
   };
 
   const formatLongDate = (date: Date): string =>
     new Intl.DateTimeFormat(navigator.language, {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    }).format(date).replace(/,/g, '');
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    })
+      .format(date)
+      .replace(/,/g, "");
 
   function LeftPanel() {
     return (
@@ -345,8 +341,8 @@ function App() {
             <li key={index}>
               <button
                 class={`${
-                  index === 0 ? 'nf nf-fa-windows' : ''
-                } ${isMenuVisible() && activeMenuName() === name ? 'active' : ''}`}
+                  index === 0 ? "nf nf-fa-windows" : ""
+                } ${isMenuVisible() && activeMenuName() === name ? "active" : ""}`}
                 onClick={(e: MouseEvent) => {
                   if (isMenuVisible()) {
                     hideMenu();
@@ -383,12 +379,12 @@ function App() {
                 title={`Volume: ${output.audio.defaultPlaybackDevice.volume}`}
                 class={`volume nf ${
                   output.audio.defaultPlaybackDevice.volume === 0
-                    ? 'nf-fa-volume_xmark'
+                    ? "nf-fa-volume_xmark"
                     : output.audio.defaultPlaybackDevice.volume < 20
-                    ? 'nf-fa-volume_low'
-                    : output.audio.defaultPlaybackDevice.volume < 40
-                    ? 'nf-fa-volume_low'
-                    : 'nf-fa-volume_high'
+                      ? "nf-fa-volume_low"
+                      : output.audio.defaultPlaybackDevice.volume < 40
+                        ? "nf-fa-volume_low"
+                        : "nf-fa-volume_high"
                 }`}
                 onMouseEnter={handleVolumeEnter}
                 onMouseMove={handleVolumeMove}
@@ -396,13 +392,13 @@ function App() {
               ></button>
               <input
                 title={`Volume: ${output.audio.defaultPlaybackDevice.volume}`}
-                class={`${isVolumeVisible() ? 'active' : ''}`}
+                class={`${isVolumeVisible() ? "active" : ""}`}
                 type="range"
                 min="0"
                 max="100"
                 step="2"
                 value={output.audio.defaultPlaybackDevice.volume}
-                onInput={e => output.audio?.setVolume(e.target.valueAsNumber)}
+                onInput={(e) => output.audio?.setVolume(e.target.valueAsNumber)}
                 onMouseEnter={handleVolumeEnter}
                 onMouseMove={handleVolumeMove}
                 onMouseLeave={handleVolumeLeave}
@@ -416,7 +412,7 @@ function App() {
             <button
               class="date"
               onClick={() => {
-                shellExec('powershell', ['-Command', 'start ms-actioncenter:']);
+                shellExec("powershell", ["-Command", "start ms-actioncenter:"]);
               }}
             >
               {formatShortDate(currentDate())}
@@ -435,4 +431,4 @@ function App() {
   );
 }
 
-render(() => <App />, document.getElementById('root')!);
+render(() => <App />, document.getElementById("root")!);

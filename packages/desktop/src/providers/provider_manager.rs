@@ -10,9 +10,8 @@ use tokio::{
 use tracing::info;
 
 use super::{
-  audio::AudioProvider, systray::SystrayProvider, window::WindowProvider,
-  Provider, ProviderConfig, ProviderFunction, ProviderFunctionResponse,
-  ProviderFunctionResult, ProviderOutput, RuntimeType
+  audio::AudioProvider, systray::SystrayProvider, window::WindowProvider, Provider, ProviderConfig,
+  ProviderFunction, ProviderFunctionResponse, ProviderFunctionResult, ProviderOutput, RuntimeType,
 };
 
 /// Common fields for a provider.
@@ -22,7 +21,7 @@ pub struct CommonProviderState {
 
   /// Wrapper around the receiver channel for incoming inputs to the
   /// provider.
-  pub input: ProviderInput
+  pub input: ProviderInput,
 }
 
 /// Handle for receiving provider inputs.
@@ -46,7 +45,7 @@ pub struct ProviderEmitter {
   emit_tx: mpsc::UnboundedSender<ProviderEmission>,
 
   /// Hash of the provider's config.
-  config_hash: String
+  config_hash: String,
 }
 
 impl ProviderEmitter {
@@ -109,7 +108,7 @@ pub struct ProviderManager {
   emit_cache: Arc<Mutex<HashMap<String, ProviderEmission>>>,
 
   /// Sender channel for provider emissions.
-  emit_tx: mpsc::UnboundedSender<ProviderEmission>
+  emit_tx: mpsc::UnboundedSender<ProviderEmission>,
 }
 
 impl ProviderManager {
@@ -168,8 +167,8 @@ impl ProviderManager {
       },
       emitter: ProviderEmitter {
         emit_tx: self.emit_tx.clone(),
-        config_hash: config_hash.clone()
-      }
+        config_hash: config_hash.clone(),
+      },
     };
 
     let (task_handle, runtime_type) = self.create_instance(config, config_hash.clone(), common)?;

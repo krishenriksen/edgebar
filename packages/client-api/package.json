@@ -2,7 +2,7 @@
   "name": "edgebar",
   "version": "0.0.1",
   "private": true,
-  "description": "Client API for EdgeBar - a tool for creating customizable taskbars, desktop widgets, and popups.",
+  "description": "Client API for EdgeBar",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/krishenriksen/edgebar.git"
@@ -24,7 +24,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts",
+    "build": "tsup src/index.ts --format esm --dts && terser dist/index.js -o dist/index.js",
     "dev": "npm run build -- --watch src",
     "dev:local": "npm run build -- --watch src",
     "prepublishOnly": "npm run build"
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "esbuild": "0.25.2",
+    "terser": "^5.39.2",
     "tsup": "8.4.0",
     "typescript": "5.8.3"
   }

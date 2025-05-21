@@ -1,9 +1,9 @@
 /* @refresh reload */
-import './index.css';
-import { render } from 'solid-js/web';
-import { createSignal, createEffect, onCleanup } from 'solid-js';
-import { listen, UnlistenFn } from '@tauri-apps/api/event';
-import { setForegroundWindow, shellExec, resizeMenu, hideMenu } from 'edgebar';
+import "./index.css";
+import { render } from "solid-js/web";
+import { createSignal, createEffect, onCleanup } from "solid-js";
+import { listen, UnlistenFn } from "@tauri-apps/api/event";
+import { setForegroundWindow, shellExec, resizeMenu, hideMenu } from "edgebar";
 
 type DropDownItem = {
   name: string;
@@ -21,9 +21,12 @@ function WidgetDropDown() {
   const [items, setItems] = createSignal<DropDownItem[]>([]);
 
   // Listen for updates to the menu items
-  const unlisten: Promise<UnlistenFn> = listen<DropDownItem[]>('updateMenuItems', (event) => {
-    setItems(event.payload);
-  });
+  const unlisten: Promise<UnlistenFn> = listen<DropDownItem[]>(
+    "updateMenuItems",
+    (event) => {
+      setItems(event.payload);
+    },
+  );
 
   // Cleanup listener on component unmount
   onCleanup(async () => {
@@ -59,24 +62,22 @@ function WidgetDropDown() {
       hideMenu();
       setForegroundWindow(hwnd);
     }
-    await shellExec('powershell', ['-Command', action]);
+    await shellExec("powershell", ["-Command", action]);
   };
 
   return (
     <ul class="dropdown">
-      {items().map(item =>
-        item.name === 'spacer' ? (
+      {items().map((item) =>
+        item.name === "spacer" ? (
           <li class="spacer"></li>
         ) : (
-          <li class={`${item.disabled ? 'disabled' : ''}`}>
-            <button
-              onClick={() => handleAction(item.action, item.hwnd)}
-            >
+          <li class={`${item.disabled ? "disabled" : ""}`}>
+            <button onClick={() => handleAction(item.action, item.hwnd)}>
               {item.name}
             </button>
             {item.icon && (
               <>
-                {item.icon.split(',').map((ic, index) => {
+                {item.icon.split(",").map((ic, index) => {
                   const trimmed = ic.trim();
                   const iconClass = `nf ${trimmed}`;
                   return (
@@ -97,4 +98,4 @@ function WidgetDropDown() {
   );
 }
 
-render(() => <WidgetDropDown />, document.getElementById('root')!);
+render(() => <WidgetDropDown />, document.getElementById("root")!);

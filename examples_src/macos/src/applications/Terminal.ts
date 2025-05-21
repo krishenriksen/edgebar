@@ -1,4 +1,10 @@
-const applicationTitles = ['Terminal', 'PowerShell', 'PowerShell 7 (x64)', 'PowerShell 7 (x32)', 'Command Prompt'];
+const applicationTitles = [
+  'Terminal',
+  'PowerShell',
+  'PowerShell 7 (x64)',
+  'PowerShell 7 (x32)',
+  'Command Prompt',
+];
 
 const menuItems = [
   {
@@ -9,7 +15,7 @@ const menuItems = [
       { name: 'Preferences...', action: 'start pwsh' },
       { name: 'spacer', action: '' },
       { name: 'Hide Terminal', action: '' },
-      { name: 'Hide Others', action: ''},
+      { name: 'Hide Others', action: '' },
       { name: 'Show All', action: '' },
       { name: 'spacer', action: '' },
       { name: 'Quit Terminal', action: 'Stop-Process -Name "pwsh' },
@@ -80,7 +86,7 @@ const menuItems = [
         action: 'start ms-contact-support:',
       },
     ],
-  },  
+  },
 ];
 
 export { applicationTitles, menuItems };

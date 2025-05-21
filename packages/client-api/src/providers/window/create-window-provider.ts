@@ -17,7 +17,7 @@ export function createWindowProvider(
 ): WindowProvider {
   const mergedConfig = windowProviderConfigSchema.parse(config);
 
-  return createBaseProvider(mergedConfig, async queue => {
+  return createBaseProvider(mergedConfig, async (queue) => {
     return onProviderEmit<WindowOutput>(mergedConfig, ({ result }) => {
       if ('error' in result) {
         queue.error(result.error);

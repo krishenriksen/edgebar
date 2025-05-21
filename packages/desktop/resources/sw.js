@@ -1,25 +1,25 @@
-self.addEventListener('install', () => {
+self.addEventListener("install", () => {
   // Skip waiting for activation. Only has an effect if there's a newly
   // installed service worker that would otherwise remain in the `waiting`
   // state.
   self.skipWaiting();
 });
 
-self.addEventListener('activate', () => {
+self.addEventListener("activate", () => {
   // Claim clients to ensure that updates to the underlying service worker
   // take effect immediately. Normally when a service worker is updated,
   // pages won't use it until the next load.
   self.clients.claim();
 });
 
-self.addEventListener('fetch', event => {
+self.addEventListener("fetch", (event) => {
   // Use the default browser handling for requests where:
   // - The request method is not GET.
   // - The request is a navigation request.
   // - The request is to the same origin as the service worker.
   if (
-    event.request.method !== 'GET' ||
-    event.request.mode === 'navigate' ||
+    event.request.method !== "GET" ||
+    event.request.mode === "navigate" ||
     new URL(event.request.url).origin === self.location.origin
   ) {
     return;
@@ -37,20 +37,20 @@ self.addEventListener('fetch', event => {
 const deferredConfig = {
   value: null,
   resolve: null,
-  promise: new Promise(resolve =>
+  promise: new Promise((resolve) =>
     setTimeout(() => (deferredConfig.resolve = resolve)),
   ),
 };
 
-self.addEventListener('message', event => {
+self.addEventListener("message", (event) => {
   switch (event.data.type) {
-    case 'SET_CONFIG':
+    case "SET_CONFIG":
       deferredConfig.value = event.data.config;
       deferredConfig.resolve();
       break;
     default:
       console.error(
-        'Service worker received unknown message type:',
+        "Service worker received unknown message type:",
         event.data,
       );
   }
@@ -58,7 +58,7 @@ self.addEventListener('message', event => {
 
 async function clearCache() {
   await Promise.all(
-    ['responses-v1', 'metadata-v1'].map(cacheName =>
+    ["responses-v1", "metadata-v1"].map((cacheName) =>
       caches.delete(cacheName),
     ),
   );
@@ -66,19 +66,17 @@ async function clearCache() {
 
 async function handleFetch(event) {
   // Wait for config to be set before processing any requests.
-  const config = await deferredConfig.promise.then(
-    () => deferredConfig.value,
-  );
+  const config = await deferredConfig.promise.then(() => deferredConfig.value);
 
   const [responseCache, metadataCache] = await Promise.all([
-    caches.open('responses-v1'),
-    caches.open('metadata-v1'),
+    caches.open("responses-v1"),
+    caches.open("metadata-v1"),
   ]);
 
   // First, try to get the resource and its metadata from the cache.
   const [cachedResponse, cachedMetadata] = await Promise.all([
     responseCache.match(event.request),
-    metadataCache.match(event.request).then(res => res?.json()),
+    metadataCache.match(event.request).then((res) => res?.json()),
   ]);
 
   // Check if there's a valid cached response.
@@ -107,7 +105,7 @@ async function handleFetch(event) {
     // and have a status of 0.
     if (
       networkResponse &&
-      (networkResponse.ok || networkResponse.type === 'opaque')
+      (networkResponse.ok || networkResponse.type === "opaque")
     ) {
       const metadata = {
         timestamp: Date.now(),
@@ -126,10 +124,10 @@ async function handleFetch(event) {
     return networkResponse;
   } catch (error) {
     console.error(error);
-    return new Response('Offline or network error occurred.', {
+    return new Response("Offline or network error occurred.", {
       status: 503,
-      statusText: 'Service Unavailable',
-      headers: new Headers({ 'Content-Type': 'text/plain' }),
+      statusText: "Service Unavailable",
+      headers: new Headers({ "Content-Type": "text/plain" }),
     });
   }
 }

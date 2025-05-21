@@ -16,9 +16,7 @@ const menuItems = [
   },
   {
     name: 'File',
-    items: [
-      { name: 'New Text File', action: 'start code' },
-    ],
+    items: [{ name: 'New Text File', action: 'start code' }],
   },
   {
     name: 'Edit',

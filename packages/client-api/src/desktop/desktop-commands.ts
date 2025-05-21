@@ -1,7 +1,4 @@
-import {
-  type InvokeArgs,
-  invoke as tauriInvoke,
-} from '@tauri-apps/api/core';
+import { type InvokeArgs, invoke as tauriInvoke } from '@tauri-apps/api/core';
 
 import { createLogger } from '../utils';
 import type { ProviderConfig } from '~/providers';
@@ -24,13 +21,10 @@ export const desktopCommands = {
   setForegroundWindow,
   showMenu,
   resizeMenu,
-  hideMenu
+  hideMenu,
 };
 
-export type ProviderFunction =
-  | AudioFunction
-  | MediaFunction
-  | SystrayFunction;
+export type ProviderFunction = AudioFunction | MediaFunction | SystrayFunction;
 
 export interface AudioFunction {
   type: 'audio';
@@ -76,10 +70,7 @@ function startWidget(
   return invoke<void>('start_widget', { configPath, placement });
 }
 
-function startPreset(
-  configPath: string,
-  presetName: string,
-): Promise<void> {
+function startPreset(configPath: string, presetName: string): Promise<void> {
   return invoke<void>('start_preset', { configPath, presetName });
 }
 
@@ -159,13 +150,13 @@ function showMenu(
     key?: string | null;
     disabled?: boolean;
   }[],
-  button: { x: number; y: number, width: number, height: number },
-  monitor: { x: number; y: number }
+  button: { x: number; y: number; width: number; height: number },
+  monitor: { x: number; y: number },
 ): Promise<void> {
   return invoke<void>('show_menu', {
     subItems,
     button,
-    monitor
+    monitor,
   });
 }
 
@@ -214,9 +205,7 @@ export type ShellOutputEncoding =
   | 'iso-2022-jp'
   | 'shift-jis';
 
-export interface ShellExecOutput<
-  TOutput extends string | Uint8Array = string,
-> {
+export interface ShellExecOutput<TOutput extends string | Uint8Array = string> {
   code: number | null;
   signal: number | null;
   stdout: TOutput;

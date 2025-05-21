@@ -1,9 +1,6 @@
-use std::{collections::HashMap, path::PathBuf, sync::Arc};
 use serde_json::Value;
+use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
-use tauri::{AppHandle, State, Window};
-use window_util::Window as UtilWindow;
-use menu_util::{ButtonPosition, MonitorPosition};
 use crate::common::windows::WindowExtWindows;
 use crate::{
   config::{Config, WidgetConfig, WidgetPlacement},
@@ -11,6 +8,9 @@ use crate::{
   shell_state::{ShellCommandArgs, ShellState},
   widget_factory::{WidgetFactory, WidgetOpenOptions, WidgetState},
 };
+use menu_util::{ButtonPosition, MonitorPosition};
+use tauri::{AppHandle, State, Window};
+use window_util::Window as UtilWindow;
 
 #[tauri::command]
 pub async fn widget_configs(
@@ -205,9 +205,7 @@ pub fn show_menu(
 ) -> Result<String, String> {
   let app_handle: &AppHandle = config.app_handle();
 
-  match menu_util::show_menu(
-    app_handle, sub_items, button, monitor
-  ) {
+  match menu_util::show_menu(app_handle, sub_items, button, monitor) {
     Ok(_) => Ok(format!("Successfully shown menu")),
     Err(err) => Err(format!("Failed to show menu: {}", err)),
   }

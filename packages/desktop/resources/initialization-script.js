@@ -1,12 +1,12 @@
-if (window.location.host === '127.0.0.1:6124') {
-  if ('serviceWorker' in navigator) {
+if (window.location.host === "127.0.0.1:6124") {
+  if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-      .register('/__EDGEBAR/sw.js', { scope: '/' })
-      .then(sw => {
-        console.log('[EdgeBar] Service Worker registered.');
+      .register("/__EDGEBAR/sw.js", { scope: "/" })
+      .then((sw) => {
+        console.log("[EdgeBar] Service Worker registered.");
 
         const message = {
-          type: 'SET_CONFIG',
+          type: "SET_CONFIG",
           config: window.__EDGEBAR_STATE.config.caching,
         };
 
@@ -14,14 +14,14 @@ if (window.location.host === '127.0.0.1:6124') {
         sw.installing?.postMessage(message);
         sw.waiting?.postMessage(message);
       })
-      .catch(err =>
-        console.error('[EdgeBar] Service Worker failed to register:', err),
+      .catch((err) =>
+        console.error("[EdgeBar] Service Worker failed to register:", err),
       );
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     addFavicon();
-    loadCss('/__EDGEBAR/normalize.css');
+    loadCss("/__EDGEBAR/normalize.css");
   });
 }
 
@@ -29,10 +29,10 @@ if (window.location.host === '127.0.0.1:6124') {
  * Adds a CSS file with the given path to the head element.
  */
 function loadCss(path) {
-  const link = document.createElement('link');
-  link.setAttribute('data-edgebar', '');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
+  const link = document.createElement("link");
+  link.setAttribute("data-edgebar", "");
+  link.rel = "stylesheet";
+  link.type = "text/css";
   link.href = path;
   insertIntoHead(link);
 }
@@ -42,10 +42,10 @@ function loadCss(path) {
  */
 function addFavicon() {
   if (!document.querySelector('link[rel="icon"]')) {
-    const link = document.createElement('link');
-    link.setAttribute('data-edgebar', '');
-    link.rel = 'icon';
-    link.href = 'data:;';
+    const link = document.createElement("link");
+    link.setAttribute("data-edgebar", "");
+    link.rel = "icon";
+    link.href = "data:;";
     insertIntoHead(link);
   }
 }
@@ -56,7 +56,7 @@ function addFavicon() {
  * EdgeBar's defaults.
  */
 function insertIntoHead(element) {
-  const resources = document.head.querySelectorAll('link, script, style');
+  const resources = document.head.querySelectorAll("link, script, style");
   const target = resources[0]?.previousElementSibling;
 
   if (target) {

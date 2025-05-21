@@ -4,10 +4,7 @@ export interface SystrayProviderConfig {
   type: 'systray';
 }
 
-export type SystrayProvider = Provider<
-  SystrayProviderConfig,
-  SystrayOutput
->;
+export type SystrayProvider = Provider<SystrayProviderConfig, SystrayOutput>;
 
 export interface SystrayOutput {
   icons: SystrayIcon[];

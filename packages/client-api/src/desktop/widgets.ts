@@ -65,11 +65,7 @@ export async function startWidget(
     ? configPath
     : `${configPath}.edgebar.json`;
 
-  const absolutePath = await join(
-    getWidgetState().configPath,
-    '../',
-    filePath,
-  );
+  const absolutePath = await join(getWidgetState().configPath, '../', filePath);
 
   return desktopCommands.startWidget(absolutePath, placement);
 }
@@ -88,11 +84,7 @@ export async function startWidgetPreset(
     ? configPath
     : `${configPath}.edgebar.json`;
 
-  const absolutePath = await join(
-    getWidgetState().configPath,
-    '../',
-    filePath,
-  );
+  const absolutePath = await join(getWidgetState().configPath, '../', filePath);
 
   return desktopCommands.startPreset(absolutePath, presetName);
 }

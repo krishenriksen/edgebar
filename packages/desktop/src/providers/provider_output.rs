@@ -20,7 +20,7 @@ macro_rules! impl_provider_output {
 pub enum ProviderOutput {
   Audio(AudioOutput),
   Systray(SystrayOutput),
-  Window(WindowOutput)
+  Window(WindowOutput),
 }
 
 impl_provider_output! {

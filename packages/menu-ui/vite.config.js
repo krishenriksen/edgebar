@@ -1,17 +1,29 @@
-import path from 'path';
-import { defineConfig } from 'vite';
-import solid from 'vite-plugin-solid';
+import path from "path";
+import { defineConfig } from "vite";
+import solid from "vite-plugin-solid";
 
 export default defineConfig({
-  plugins: [solid()],
+  plugins: [
+    solid(),
+  ],
   server: {
     port: 4200,
   },
-  build: { target: 'esnext' },
-  base: './',
+  build: {
+    target: "esnext",
+    minify: "terser",
+    terserOptions: {
+      compress: true,
+      mangle: true,
+      format: {
+        comments: false,
+      },
+    },
+  },
+  base: "./",
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, './src/app'),
+      "~": path.resolve(__dirname, "./src/app"),
     },
   },
 });

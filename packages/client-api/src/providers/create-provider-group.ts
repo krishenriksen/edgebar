@@ -63,9 +63,7 @@ export type ProviderGroup<T extends ProviderGroupConfig> = {
    *
    * @param callback - Callback to run when an error is emitted.
    */
-  onError: (
-    callback: (errorMap: ProviderGroup<T>['errorMap']) => void,
-  ) => void;
+  onError: (callback: (errorMap: ProviderGroup<T>['errorMap']) => void) => void;
 
   /**
    * Restarts all providers in the group.
@@ -97,24 +95,24 @@ export function createProviderGroup<T extends ProviderGroupConfig>(
   const providerMap = createProviderMap(configMap);
 
   let outputMap = Object.fromEntries(
-    Object.keys(providerMap).map(name => [name, null]),
+    Object.keys(providerMap).map((name) => [name, null]),
   ) as ProviderGroup<T>['outputMap'];
 
   let errorMap = Object.fromEntries(
-    Object.keys(providerMap).map(name => [name, null]),
+    Object.keys(providerMap).map((name) => [name, null]),
   ) as ProviderGroup<T>['errorMap'];
 
   for (const [name, provider] of Object.entries(providerMap)) {
     provider.onOutput(() => {
       outputMap = { ...outputMap, [name]: provider.output };
       errorMap = { ...errorMap, [name]: null };
-      outputListeners.forEach(listener => listener(outputMap));
+      outputListeners.forEach((listener) => listener(outputMap));
     });
 
     provider.onError(() => {
       errorMap = { ...errorMap, [name]: provider.error };
       outputMap = { ...outputMap, [name]: null };
-      errorListeners.forEach(listener => listener(errorMap));
+      errorListeners.forEach((listener) => listener(errorMap));
     });
   }
 
@@ -130,15 +128,15 @@ export function createProviderGroup<T extends ProviderGroupConfig>(
     },
     configMap,
     raw: providerMap,
-    onOutput: callback => {
+    onOutput: (callback) => {
       outputListeners.add(callback);
     },
-    onError: callback => {
+    onError: (callback) => {
       errorListeners.add(callback);
     },
     restartAll: async () => {
       await Promise.all(
-        Object.values(providerMap).map(provider => provider.restart()),
+        Object.values(providerMap).map((provider) => provider.restart()),
       );
     },
     stopAll: async () => {
@@ -146,7 +144,7 @@ export function createProviderGroup<T extends ProviderGroupConfig>(
       errorListeners.clear();
 
       await Promise.all(
-        Object.values(providerMap).map(provider => provider.stop()),
+        Object.values(providerMap).map((provider) => provider.stop()),
       );
     },
   };

@@ -1,8 +1,4 @@
-import {
-  listen,
-  type Event,
-  type UnlistenFn,
-} from '@tauri-apps/api/event';
+import { listen, type Event, type UnlistenFn } from '@tauri-apps/api/event';
 import type { ProviderConfig } from '~/providers';
 
 import { createLogger, simpleHash } from '~/utils';
@@ -43,7 +39,7 @@ export async function onProviderEmit<T = unknown>(
 
   return async () => {
     callbacks = callbacks.filter(
-      callback => callback.configHash !== configHash,
+      (callback) => callback.configHash !== configHash,
     );
 
     await desktopCommands.unlistenProvider(configHash);
@@ -83,7 +79,7 @@ function registerEventCallback<T>(
  */
 async function listenProviderEmit(): Promise<UnlistenFn> {
   return listen('provider-emit', (event: Event<ProviderEmitEvent>) => {
-    callbacks.forEach(callback => {
+    callbacks.forEach((callback) => {
       if (event.payload.configHash === callback.configHash) {
         callback.fn(event);
       }

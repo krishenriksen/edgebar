@@ -17,6 +17,7 @@
     "node": ">=22.15.1"
   },
   "dependencies": {
-    "edgebar": "link:../.local/share/pnpm/global/5/node_modules/edgebar"
+    "edgebar": "link:../.local/share/pnpm/global/5/node_modules/edgebar",
+    "prettier": "^3.5.3"
   }
 }

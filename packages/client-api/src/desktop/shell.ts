@@ -53,8 +53,8 @@ export async function showMenu(
     key?: string;
     disabled?: boolean;
   }[],
-  button: { x: number; y: number, width: number, height: number },
-  monitor: { x: number; y: number }
+  button: { x: number; y: number; width: number; height: number },
+  monitor: { x: number; y: number },
 ): Promise<void> {
   return await desktopCommands.showMenu(subItems, button, monitor);
 }
@@ -93,9 +93,7 @@ export async function hideMenu(): Promise<void> {
  * @param {Object} options - Spawn options (optional).
  * @throws - If shell permissions are missing.
  */
-export async function shellExec<
-  TOutput extends string | Uint8Array = string,
->(
+export async function shellExec<TOutput extends string | Uint8Array = string>(
   program: string,
   args?: string | string[],
   options?: ShellCommandOptions,
@@ -126,18 +124,12 @@ export async function shellExec<
  * @param {Object} options - Spawn options (optional).
  * @throws - If shell permissions are missing.
  */
-export async function shellSpawn<
-  TOutput extends string | Uint8Array = string,
->(
+export async function shellSpawn<TOutput extends string | Uint8Array = string>(
   program: string,
   args?: string | string[],
   options?: ShellCommandOptions,
 ): Promise<ShellProcess<TOutput>> {
-  const processId = await desktopCommands.shellSpawn(
-    program,
-    args,
-    options,
-  );
+  const processId = await desktopCommands.shellSpawn(program, args, options);
 
   const stdoutCallbacks: ((data: TOutput) => void)[] = [];
   const stderrCallbacks: ((data: TOutput) => void)[] = [];
@@ -155,20 +147,20 @@ export async function shellSpawn<
 
         switch (shellEvent.type) {
           case 'stdout':
-            stdoutCallbacks.forEach(callback =>
+            stdoutCallbacks.forEach((callback) =>
               callback(shellEvent.data as TOutput),
             );
             break;
           case 'stderr':
-            stderrCallbacks.forEach(callback =>
+            stderrCallbacks.forEach((callback) =>
               callback(shellEvent.data as TOutput),
             );
             break;
           case 'error':
-            errorCallbacks.forEach(callback => callback(shellEvent.data));
+            errorCallbacks.forEach((callback) => callback(shellEvent.data));
             break;
           case 'terminated':
-            exitCallbacks.forEach(callback => callback(shellEvent.data));
+            exitCallbacks.forEach((callback) => callback(shellEvent.data));
             unlistenEvents();
             break;
         }
@@ -178,17 +170,15 @@ export async function shellSpawn<
 
   return {
     processId,
-    onStdout: callback => stdoutCallbacks.push(callback),
-    onStderr: callback => stderrCallbacks.push(callback),
-    onExit: callback => exitCallbacks.push(callback),
+    onStdout: (callback) => stdoutCallbacks.push(callback),
+    onStderr: (callback) => stderrCallbacks.push(callback),
+    onExit: (callback) => exitCallbacks.push(callback),
     kill: () => desktopCommands.shellKill(processId),
-    write: data => desktopCommands.shellWrite(processId, data),
+    write: (data) => desktopCommands.shellWrite(processId, data),
   };
 }
 
-export interface ShellProcess<
-  TOutput extends string | Uint8Array = string,
-> {
+export interface ShellProcess<TOutput extends string | Uint8Array = string> {
   processId: number;
   onStdout: (callback: (line: TOutput) => void) => void;
   onStderr: (callback: (line: TOutput) => void) => void;
