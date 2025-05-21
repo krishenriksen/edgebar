@@ -15,28 +15,6 @@ importers:
         specifier: link:../.local/share/pnpm/global/5/node_modules/edgebar
         version: link:../.local/share/pnpm/global/5/node_modules/edgebar
 
-  examples_src/macos:
-    dependencies:
-      '@tauri-apps/api':
-        specifier: 2.5.0
-        version: 2.5.0
-      '@tauri-apps/cli':
-        specifier: 2.5.0
-        version: 2.5.0
-      solid-js:
-        specifier: ^1.9.7
-        version: 1.9.7
-    devDependencies:
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-      vite:
-        specifier: ^6.3.5
-        version: 6.3.5
-      vite-plugin-solid:
-        specifier: ^2.11.6
-        version: 2.11.6(solid-js@1.9.7)(vite@6.3.5)
-
   packages/client-api:
     dependencies:
       '@tauri-apps/api':
