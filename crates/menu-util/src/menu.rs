@@ -18,7 +18,7 @@ pub fn initialize_menu_window(app_handle: &AppHandle) -> anyhow::Result<()> {
       let window_result =
         WebviewWindowBuilder::new(&app_handle_clone, "macos", WebviewUrl::App("/".into()))
           .title("Dropdown - EdgeBar") // Include EdgeBar in the title so it can be ignored in the event callback
-          .focused(true)
+          .focused(false)
           .visible(false)
           .position(0.0, 35.0)
           .inner_size(10.0, 10.0)
@@ -42,9 +42,11 @@ pub fn initialize_menu_window(app_handle: &AppHandle) -> anyhow::Result<()> {
           eprintln!("Failed to create window: {}", err);
         }
       }
-    });
 
-    hide_menu(app_handle)?;
+      // Add a timeout before hiding the menu
+      tokio::time::sleep(std::time::Duration::from_millis(1000)).await;
+      let _ = hide_menu(&app_handle_clone);
+    });
   }
 
   Ok(())
