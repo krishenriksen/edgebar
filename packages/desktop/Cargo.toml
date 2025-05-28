@@ -32,7 +32,6 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 uuid = { workspace = true }
 tauri = { version = "2.5.1", features = [
-  "devtools",
   "protocol-asset",
   "tray-icon",
   "webview-data-url",
