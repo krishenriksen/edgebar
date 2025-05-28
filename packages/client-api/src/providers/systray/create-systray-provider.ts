@@ -17,24 +17,46 @@ export function createSystrayProvider(
 ): SystrayProvider {
   const mergedConfig = systrayProviderConfigSchema.parse(config);
 
-  return createBaseProvider(mergedConfig, async (queue) => {
+  // Cache icon blobs and object URLs to prevent flickering during updates.
+  const iconCache = new Map<string, { iconBlob: Blob; iconUrl: string }>();
+
+  return createBaseProvider(mergedConfig, async queue => {
     return onProviderEmit<SystrayOutput>(
       mergedConfig,
       ({ configHash, result }) => {
         if ('error' in result) {
           queue.error(result.error);
         } else {
+          // Collect hashes of all current icons to identify which cache
+          // entries to keep.
+          const currentHashes = new Set(
+            result.output.icons.map(icon => icon.iconHash),
+          );
+
           queue.output({
             ...result.output,
-            icons: result.output.icons.map((icon) => {
-              const iconBlob = new Blob([new Uint8Array(icon.iconBytes)], {
-                type: 'image/png',
-              });
+            icons: result.output.icons.map(icon => {
+              let cachedIcon = iconCache.get(icon.iconHash);
+
+              if (!cachedIcon) {
+                // Create a new blob and object URL for this icon.
+                const iconBlob = new Blob(
+                  [new Uint8Array(icon.iconBytes)],
+                  { type: 'image/png' },
+                );
+
+                cachedIcon = {
+                  iconBlob,
+                  iconUrl: URL.createObjectURL(iconBlob),
+                };
+
+                iconCache.set(icon.iconHash, cachedIcon);
+              }
 
               return {
                 ...icon,
-                iconBlob,
-                iconUrl: URL.createObjectURL(iconBlob),
+                iconBlob: cachedIcon.iconBlob,
+                iconUrl: cachedIcon.iconUrl,
               };
             }),
             onHoverEnter: (iconId: string) => {
@@ -91,6 +113,14 @@ export function createSystrayProvider(
                 },
               });
             },
+          });
+
+          // Clean up cache to prevent leaking object URLs.
+          iconCache.forEach((cachedIcon, hash) => {
+            if (!currentHashes.has(hash)) {
+              URL.revokeObjectURL(cachedIcon.iconUrl);
+              iconCache.delete(hash);
+            }
           });
         }
       },

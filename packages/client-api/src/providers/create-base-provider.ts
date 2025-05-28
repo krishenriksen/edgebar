@@ -51,7 +51,6 @@ export interface Provider<TConfig, TOutput> {
 }
 
 type UnlistenFn = () => void | Promise<void>;
-// type UnlistenFn = () => Promise<void>;
 
 /**
  * Fetches next output or error from the provider.
@@ -61,7 +60,10 @@ type ProviderFetcher<T> = (queue: {
   error: (nextError: string) => void;
 }) => Promise<UnlistenFn>;
 
-export function createBaseProvider<TConfig extends ProviderConfig, TOutput>(
+export function createBaseProvider<
+  TConfig extends ProviderConfig,
+  TOutput,
+>(
   config: TConfig,
   fetcher: ProviderFetcher<TOutput>,
 ): Provider<TConfig, TOutput> {
@@ -78,13 +80,13 @@ export function createBaseProvider<TConfig extends ProviderConfig, TOutput>(
 
   function startFetcher() {
     return fetcher({
-      output: (output) => {
+      output: output => {
         latestEmission = { output, error: null, hasError: false };
-        outputListeners.forEach((listener) => listener(output));
+        outputListeners.forEach(listener => listener(output));
       },
-      error: (error) => {
+      error: error => {
         latestEmission = { output: null, error, hasError: true };
-        errorListeners.forEach((listener) => listener(error));
+        errorListeners.forEach(listener => listener(error));
       },
     });
   }
@@ -120,10 +122,10 @@ export function createBaseProvider<TConfig extends ProviderConfig, TOutput>(
         unlisten = null;
       }
     },
-    onOutput: (callback) => {
+    onOutput: callback => {
       outputListeners.add(callback);
     },
-    onError: (callback) => {
+    onError: callback => {
       errorListeners.add(callback);
     },
   };

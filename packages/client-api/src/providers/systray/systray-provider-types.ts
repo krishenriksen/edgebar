@@ -4,7 +4,10 @@ export interface SystrayProviderConfig {
   type: 'systray';
 }
 
-export type SystrayProvider = Provider<SystrayProviderConfig, SystrayOutput>;
+export type SystrayProvider = Provider<
+  SystrayProviderConfig,
+  SystrayOutput
+>;
 
 export interface SystrayOutput {
   icons: SystrayIcon[];
@@ -20,6 +23,7 @@ export interface SystrayIcon {
   id: string;
   iconBytes: number[];
   iconBlob: Blob;
+  iconHash: string;
   iconUrl: string;
   tooltip: string;
 }

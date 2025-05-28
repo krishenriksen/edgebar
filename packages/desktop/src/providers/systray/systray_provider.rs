@@ -2,8 +2,9 @@ use serde::{Deserialize, Serialize};
 use systray_util::{ImageFormat, Systray, SystrayIcon, SystrayIconAction};
 
 use crate::providers::{
-  CommonProviderState, Provider, ProviderFunction, ProviderFunctionResponse, ProviderInputMsg,
-  RuntimeType, SystrayFunction,
+  CommonProviderState, Provider, ProviderFunction,
+  ProviderFunctionResponse, ProviderInputMsg, RuntimeType,
+  SystrayFunction,
 };
 
 #[derive(Deserialize, Debug)]
@@ -22,6 +23,7 @@ pub struct SystrayOutputIcon {
   pub id: String,
   pub tooltip: String,
   pub icon_bytes: Vec<u8>,
+  pub icon_hash: String,
 }
 
 impl TryFrom<SystrayIcon> for SystrayOutputIcon {
@@ -32,6 +34,9 @@ impl TryFrom<SystrayIcon> for SystrayOutputIcon {
       id: icon.stable_id.to_string(),
       tooltip: icon.tooltip.clone(),
       icon_bytes: icon.to_image_format(ImageFormat::Png)?,
+      icon_hash: icon
+        .icon_image_hash
+        .ok_or(anyhow::anyhow!("Missing hash for icon image."))?,
     })
   }
 }
@@ -52,7 +57,10 @@ pub struct SystrayProvider {
 }
 
 impl SystrayProvider {
-  pub fn new(_config: SystrayProviderConfig, common: CommonProviderState) -> SystrayProvider {
+  pub fn new(
+    _config: SystrayProviderConfig,
+    common: CommonProviderState,
+  ) -> SystrayProvider {
     SystrayProvider { _config, common }
   }
 
@@ -61,24 +69,30 @@ impl SystrayProvider {
     function: SystrayFunction,
   ) -> anyhow::Result<ProviderFunctionResponse> {
     match &function {
-      SystrayFunction::IconHoverEnter(args) => {
-        systray.send_action(&args.icon_id.parse()?, &SystrayIconAction::HoverEnter)
-      }
-      SystrayFunction::IconHoverLeave(args) => {
-        systray.send_action(&args.icon_id.parse()?, &SystrayIconAction::HoverLeave)
-      }
-      SystrayFunction::IconHoverMove(args) => {
-        systray.send_action(&args.icon_id.parse()?, &SystrayIconAction::HoverMove)
-      }
-      SystrayFunction::IconLeftClick(args) => {
-        systray.send_action(&args.icon_id.parse()?, &SystrayIconAction::LeftClick)
-      }
-      SystrayFunction::IconRightClick(args) => {
-        systray.send_action(&args.icon_id.parse()?, &SystrayIconAction::RightClick)
-      }
-      SystrayFunction::IconMiddleClick(args) => {
-        systray.send_action(&args.icon_id.parse()?, &SystrayIconAction::MiddleClick)
-      }
+      SystrayFunction::IconHoverEnter(args) => systray.send_action(
+        &args.icon_id.parse()?,
+        &SystrayIconAction::HoverEnter,
+      ),
+      SystrayFunction::IconHoverLeave(args) => systray.send_action(
+        &args.icon_id.parse()?,
+        &SystrayIconAction::HoverLeave,
+      ),
+      SystrayFunction::IconHoverMove(args) => systray.send_action(
+        &args.icon_id.parse()?,
+        &SystrayIconAction::HoverMove,
+      ),
+      SystrayFunction::IconLeftClick(args) => systray.send_action(
+        &args.icon_id.parse()?,
+        &SystrayIconAction::LeftClick,
+      ),
+      SystrayFunction::IconRightClick(args) => systray.send_action(
+        &args.icon_id.parse()?,
+        &SystrayIconAction::RightClick,
+      ),
+      SystrayFunction::IconMiddleClick(args) => systray.send_action(
+        &args.icon_id.parse()?,
+        &SystrayIconAction::MiddleClick,
+      ),
     }?;
 
     Ok(ProviderFunctionResponse::Null)
@@ -93,10 +107,9 @@ impl Provider for SystrayProvider {
 
   async fn start_async(&mut self) {
     let Ok(mut systray) = Systray::new() else {
-      self
-        .common
-        .emitter
-        .emit_output::<SystrayOutput>(Err(anyhow::anyhow!("Failed to initialize systray.")));
+      self.common.emitter.emit_output::<SystrayOutput>(Err(
+        anyhow::anyhow!("Failed to initialize systray."),
+      ));
 
       return;
     };
