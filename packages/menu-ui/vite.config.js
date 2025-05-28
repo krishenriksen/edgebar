@@ -20,6 +20,7 @@ export default defineConfig({
       },
     },
   },
+  publicDir: './resources',
   base: "./",
   resolve: {
     alias: {

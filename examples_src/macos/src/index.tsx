@@ -24,6 +24,75 @@ function App() {
   createEffect(() => providers.onOutput(setOutput));
 
   /**
+   * Show taskbar context menu on right click
+   */
+  const taskbarMenuItems = [
+    {
+      name: "Task Manager",
+      action: 'start taskmgr',
+      hwnd: 0,
+    },
+    {
+      name: "Taskbar settings",
+      action: 'start ms-settings:taskbar',
+      hwnd: 0,
+    },
+  ];
+
+  createEffect(() => {
+    const handler = (e: MouseEvent) => {
+      e.preventDefault();
+
+      // Prevent menu if a systray icon was clicked
+      let el = e.target as HTMLElement | null;
+      while (el) {
+        if (el.classList && el.classList.contains("systray-icon")) {
+          return; // Don't show the menu
+        }
+        el = el.parentElement;
+      }
+
+      // Use document.body as the anchor for the menu
+      const target = document.body as HTMLButtonElement;
+      const rect = target.getBoundingClientRect();
+
+      // Create a proxy event that mimics MouseEvent and adds getBoundingClientRect, x, and y
+      const customEvent = new Proxy(e, {
+        get(obj, prop) {
+          if (prop === "currentTarget") {
+            // Return a mock element with getBoundingClientRect
+            return {
+              getBoundingClientRect: () => ({
+                x: e.x,
+                y: e.y,
+                width: rect.width,
+                height: rect.height,
+                left: e.x,
+                top: 0,
+                right: e.x + rect.width,
+                bottom: e.y + rect.height
+              }),
+            };
+          }
+
+          // Fallback to original event properties
+          return (obj as any)[prop];
+        },
+      }) as MouseEvent;
+
+      if (isMenuVisible()) {
+        hideMenu();
+      } else {
+        handleMenuInteraction(customEvent, taskbarMenuItems);
+      }
+      setMenuVisible(!isMenuVisible());
+    };
+
+    document.addEventListener("contextmenu", handler);
+    return () => document.removeEventListener("contextmenu", handler);
+  });
+
+  /**
    * Get menu entries for specific applications
    */
   type MenuItem = {

@@ -28,13 +28,21 @@ export type ProviderFunction = AudioFunction | MediaFunction | SystrayFunction;
 
 export interface AudioFunction {
   type: 'audio';
-  function: {
-    name: 'set_volume';
-    args: {
-      volume: number;
-      deviceId?: string;
-    };
-  };
+  function:
+    | {
+        name: 'set_volume';
+        args: {
+          volume?: number;
+          deviceId?: string;
+        };
+      }
+    | {
+        name: 'set_mute';
+        args: {
+          mute?: boolean;
+          deviceId?: string;
+        };
+      };
 }
 
 export interface MediaFunction {

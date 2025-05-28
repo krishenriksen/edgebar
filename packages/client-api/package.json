@@ -35,7 +35,6 @@
     "zod": "3.24.3"
   },
   "devDependencies": {
-    "esbuild": "0.25.2",
     "terser": "^5.39.2",
     "tsup": "8.4.0",
     "typescript": "5.8.3"

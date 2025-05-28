@@ -7,6 +7,7 @@ import type {
   AudioProvider,
   AudioProviderConfig,
   SetVolumeOptions,
+  SetMuteOptions,
 } from './audio-provider-types';
 
 const audioProviderConfigSchema = z.object({
@@ -18,7 +19,7 @@ export function createAudioProvider(
 ): AudioProvider {
   const mergedConfig = audioProviderConfigSchema.parse(config);
 
-  return createBaseProvider(mergedConfig, async (queue) => {
+  return createBaseProvider(mergedConfig, async queue => {
     return onProviderEmit<AudioOutput>(
       mergedConfig,
       ({ configHash, result }) => {
@@ -36,6 +37,15 @@ export function createAudioProvider(
                 },
               });
             },
+            setMute: (mute: boolean, options?: SetMuteOptions) => {
+              return desktopCommands.callProviderFunction(configHash, {
+                type: 'audio',
+                function: {
+                  name: 'set_mute',
+                  args: { mute, deviceId: options?.deviceId },
+                }
+              });
+            }
           });
         }
       },

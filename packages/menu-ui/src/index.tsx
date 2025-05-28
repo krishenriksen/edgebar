@@ -58,11 +58,14 @@ function WidgetDropDown() {
   });
 
   const handleAction = async (action: string, hwnd?: number) => {
+    hideMenu();
+    
+    // If a hwnd is provided, set it to the foreground window before executing the action.
     if (hwnd) {
-      hideMenu();
       setForegroundWindow(hwnd);
     }
-    await shellExec("powershell", ["-Command", action]);
+
+    shellExec("powershell", ["-Command", action]);
   };
 
   return (

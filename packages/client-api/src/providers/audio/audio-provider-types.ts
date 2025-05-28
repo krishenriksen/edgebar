@@ -12,9 +12,14 @@ export interface AudioOutput {
   playbackDevices: AudioDevice[];
   recordingDevices: AudioDevice[];
   setVolume(volume: number, options?: SetVolumeOptions): Promise<void>;
+  setMute(mute: boolean, options?: SetMuteOptions): Promise<void>;
 }
 
 export interface SetVolumeOptions {
+  deviceId?: string;
+}
+
+export interface SetMuteOptions {
   deviceId?: string;
 }
 
@@ -25,6 +30,7 @@ export interface AudioDevice {
   type: AudioDeviceType;
   isDefaultPlayback: boolean;
   isDefaultRecording: boolean;
+  isMuted: boolean;
 }
 
 export type AudioDeviceType = 'playback' | 'recording';
