@@ -24,6 +24,7 @@ pub fn initialize_menu_window(app_handle: &AppHandle) -> anyhow::Result<()> {
           .inner_size(10.0, 10.0)
           .resizable(false)
           .decorations(false)
+          .closable(false)
           .skip_taskbar(true)
           .always_on_top(true)
           .build();

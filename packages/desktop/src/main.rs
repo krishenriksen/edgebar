@@ -4,7 +4,10 @@
 use std::{env, sync::Arc};
 
 use clap::Parser;
-use tauri::{async_runtime::block_on, AppHandle, Emitter, Manager, RunEvent};
+use tauri::{
+  async_runtime::block_on, AppHandle, Emitter,
+  Manager, RunEvent, WebviewUrl, WebviewWindowBuilder,
+};
 use tokio::{sync::mpsc, task};
 use tracing::{error, info, level_filters::LevelFilter};
 use tracing_subscriber::EnvFilter;
@@ -108,12 +111,10 @@ async fn main() -> anyhow::Result<()> {
     .build(tauri::generate_context!())?;
 
   app.run(|app, event| {
-    if let RunEvent::ExitRequested { code, api, .. } = &event {
-      if code.is_none() {
-        // Keep the message loop running even if all windows are closed.
-        api.prevent_exit();
-      } else {
-        // Deallocate any appbars on Windows.
+    if let RunEvent::ExitRequested { .. } = &event {
+      // Deallocate any appbars on Windows.
+      #[cfg(target_os = "windows")]
+      {
         for (_, window) in app.webview_windows() {
           let _ = window.as_ref().window().deallocate_app_bar();
         }
@@ -196,6 +197,10 @@ async fn start_app(app: &mut tauri::App, cli: Cli) -> anyhow::Result<()> {
     manager,
     emit_rx,
   );
+
+  // Placeholder window to keep the process running when all windows are
+  // closed.
+  create_placeholder_window(app.handle())?;
 
   Ok(())
 }
@@ -346,6 +351,26 @@ async fn open_widgets_by_cli_command(
   if let Err(err) = res {
     error!("Failed to open widgets: {:?}", err);
   }
+
+  Ok(())
+}
+
+/// Creates a placeholder window to prevent Tauri from automatically
+/// exiting when all windows are closed.
+///
+/// By default, Tauri will trigger an exit request when all windows are
+/// closed. Tracking issue: https://github.com/tauri-apps/tauri/issues/13511
+fn create_placeholder_window(app: &tauri::AppHandle) -> tauri::Result<()> {
+  let _placeholder = WebviewWindowBuilder::new(
+    app,
+    "placeholder",
+    WebviewUrl::App("data:text/html,".into()),
+  )
+  .visible(false)
+  .skip_taskbar(true)
+  .decorations(false)
+  .closable(false)
+  .build()?;
 
   Ok(())
 }
