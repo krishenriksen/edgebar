@@ -23,7 +23,6 @@ export interface SystrayIcon {
   id: string;
   iconBytes: number[];
   iconBlob: Blob;
-  iconHash: string;
   iconUrl: string;
   tooltip: string;
 }
