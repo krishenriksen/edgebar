@@ -4,7 +4,7 @@ import { createLogger } from '../utils';
 import type { ProviderConfig } from '~/providers';
 import type { WidgetPlacement } from '~/config';
 
-const logger = createLogger('desktop-commands');
+const logger = createLogger();
 
 export const desktopCommands = {
   startWidget,

@@ -1,10 +1,7 @@
 import { listen, type Event, type UnlistenFn } from '@tauri-apps/api/event';
 import type { ProviderConfig } from '~/providers';
 
-import { createLogger, simpleHash } from '~/utils';
 import { desktopCommands } from './desktop-commands';
-
-const logger = createLogger('desktop-events');
 
 let listenPromise: Promise<UnlistenFn> | null = null;
 
@@ -25,7 +22,11 @@ export async function onProviderEmit<T = unknown>(
   config: ProviderConfig,
   callback: (event: ProviderEmitEvent<T>) => void,
 ): Promise<() => Promise<void>> {
-  const configHash = simpleHash(config);
+  // JSON.stringify omits `undefined` and function values by default. These
+  // need to be included in the hash.  
+  const configHash = JSON.stringify(config, (_: unknown, val: unknown) =>
+    typeof val === 'object' ? val : String(val),
+  );
 
   registerEventCallback(configHash, callback);
 
@@ -65,7 +66,6 @@ function registerEventCallback<T>(
       return;
     }
 
-    logger.debug('Incoming provider emission:', event.payload);
     callback(event.payload);
   };
 

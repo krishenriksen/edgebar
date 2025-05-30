@@ -1,15 +1,11 @@
 type LogMethod = 'log' | 'warn' | 'error';
 
-const isProductionMode = true; // Set to false to enable debug mode
-
-export function createLogger(section: string) {
+export function createLogger(section?: string) {
   function log(
     consoleLogMethod: LogMethod,
     message: string,
     ...data: unknown[]
   ) {
-    if (isProductionMode) return; // Only log if in debug mode
-
     const date = new Date();
     const timestamp =
       `${date.getHours().toString().padStart(2, '0')}:` +
@@ -17,15 +13,13 @@ export function createLogger(section: string) {
       `${date.getSeconds().toString().padStart(2, '0')}:` +
       `${date.getMilliseconds().toString().padStart(3, '0')}`;
 
-    // Clone data to avoid reference changes in Chrome console.
-    const clonedData = data.map(tryClone);
-
     console[consoleLogMethod](
-      `%c${timestamp}%c [${section}] %c${message}`,
+      `%c[Zebar] %c${timestamp}%c${section ? ` (${section})` : ''} %c${message}`,
+      'color: #4ade80',
       'color: #f5f9b4',
       'color: #d0b4f9',
       'color: inherit',
-      ...clonedData,
+      ...data,
     );
   }
 
@@ -51,17 +45,4 @@ export function createLogger(section: string) {
     warn,
     error,
   };
-}
-
-function tryClone(data: unknown) {
-  if (data === null || data === undefined || data instanceof Error) {
-    return data;
-  }
-
-  try {
-    return structuredClone(data);
-  } catch (err) {
-    console.warn('Unable to clone data');
-    return data;
-  }
 }
