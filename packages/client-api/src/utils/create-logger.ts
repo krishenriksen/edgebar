@@ -14,7 +14,7 @@ export function createLogger(section?: string) {
       `${date.getMilliseconds().toString().padStart(3, '0')}`;
 
     console[consoleLogMethod](
-      `%c[Zebar] %c${timestamp}%c${section ? ` (${section})` : ''} %c${message}`,
+      `%c[Edgebar] %c${timestamp}%c${section ? ` (${section})` : ''} %c${message}`,
       'color: #4ade80',
       'color: #f5f9b4',
       'color: #d0b4f9',

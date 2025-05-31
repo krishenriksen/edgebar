@@ -161,6 +161,29 @@ impl SystrayIcon {
 
     Ok(bytes)
   }
+
+  /// Checks if the icon would change from the given icon data.
+  fn has_change(&self, icon_data: &IconEventData) -> bool {
+    icon_data.uid.is_some_and(|uid| self.uid != Some(uid))
+      || icon_data
+        .window_handle
+        .is_some_and(|handle| self.window_handle != Some(handle))
+      || icon_data.guid.is_some_and(|guid| self.guid != Some(guid))
+      || icon_data
+        .tooltip
+        .as_ref()
+        .is_some_and(|t| &self.tooltip != t)
+      || icon_data
+        .icon_handle
+        .is_some_and(|handle| self.icon_handle != Some(handle))
+      || icon_data
+        .callback_message
+        .is_some_and(|msg| self.callback_message != Some(msg))
+      || icon_data
+        .version
+        .is_some_and(|ver| self.version != Some(ver))
+      || self.is_visible != icon_data.is_visible
+  }
 }
 
 /// Events that can be emitted by `Systray`.
@@ -265,6 +288,11 @@ impl Systray {
 
         // Update the icon in-place if found.
         if let Some(found_icon) = found_icon {
+          // Avoid emitting update events for no-op changes.
+          if !found_icon.has_change(icon_data) {
+            return None;
+          }
+          
           if let Some(uid) = icon_data.uid {
             found_icon.uid = Some(uid);
           }

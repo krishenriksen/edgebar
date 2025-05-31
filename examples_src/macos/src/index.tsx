@@ -30,11 +30,13 @@ function App() {
     {
       name: "Task Manager",
       action: 'start taskmgr',
+      icon: 'nf-md-chart_bar',
       hwnd: 0,
     },
     {
       name: "Taskbar settings",
       action: 'start ms-settings:taskbar',
+      icon: 'nf-md-cog',
       hwnd: 0,
     },
   ];

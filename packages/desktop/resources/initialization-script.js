@@ -3,7 +3,7 @@ setInterval(
   () => {
     console.clear();
     console.info(
-      '%c[Zebar]%c Console is cleared every 15 minutes to prevent memory buildup from logged data.',
+      '%c[Edgebar]%c Console is cleared every 15 minutes to prevent memory buildup from logged data.',
       'color: #4ade80',
       'color: inherit',
     );

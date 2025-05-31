@@ -26,6 +26,10 @@
   content: "\f0636";
 }
 
+.nf-md-chart_bar:before{content:"\f0128"}
+.nf-md-cog:before{content:"\f0493"}
+.nf-md-tools:before{content:"\f1064"}
+
 html,
 body {
   margin: 0;
