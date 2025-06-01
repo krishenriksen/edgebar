@@ -2,8 +2,8 @@ import "./index.css";
 import { render } from "solid-js/web";
 import { createStore } from "solid-js/store";
 import { createSignal, createEffect, createMemo } from "solid-js";
-import { createProviderGroup, shellExec, showMenu, hideMenu } from "edgebar";
 import { currentMonitor } from "@tauri-apps/api/window";
+import { createProviderGroup, shellExec, showMenu, hideMenu } from "edgebar";
 
 // Use Vite's import.meta.glob to import all files dynamically
 const modules = import.meta.glob("./applications/*.ts", { eager: true });
@@ -22,6 +22,17 @@ function App() {
 
   const [output, setOutput] = createStore(providers.outputMap);
   createEffect(() => providers.onOutput(setOutput));
+
+  /**
+   * signal to track if the monitor is wide enough
+   * to show the full taskbar
+   */
+  const [isWideEnough, setIsWideEnough] = createSignal(true);
+
+  createEffect(async () => {
+    const monitor = await currentMonitor();
+    setIsWideEnough((monitor?.size?.width || window.innerWidth) >= 1280);
+  });
 
   /**
    * Show taskbar context menu on right click
@@ -82,12 +93,7 @@ function App() {
         },
       }) as MouseEvent;
 
-      if (isMenuVisible()) {
-        hideMenu();
-      } else {
-        handleMenuInteraction(customEvent, taskbarMenuItems);
-      }
-      setMenuVisible(!isMenuVisible());
+      handleMenuInteraction(customEvent, taskbarMenuItems);
     };
 
     document.addEventListener("contextmenu", handler);
@@ -216,6 +222,11 @@ function App() {
         options.push({
           name: title,
         });
+      }
+
+      // Only keep the first option if monitor is narrow
+      if (!isWideEnough()) {
+        options = options.slice(0, 1);
       }
 
       // Update appSpecificOptions while preserving the Windows module at index 0
@@ -479,16 +490,18 @@ function App() {
 
           {SystrayIcons()}
 
-          <li title={formatLongDate(currentDate())}>
-            <button
-              class="date"
-              onClick={() => {
-                shellExec("powershell", ["-Command", "start ms-actioncenter:"]);
-              }}
-            >
-              {formatShortDate(currentDate())}
-            </button>
-          </li>
+          {isWideEnough() && (
+            <li title={formatLongDate(currentDate())}>
+              <button
+                class="date"
+                onClick={() => {
+                  shellExec("powershell", ["-Command", "start ms-actioncenter:"]);
+                }}
+              >
+                {formatShortDate(currentDate())}
+              </button>
+            </li>
+          )}
         </ul>
       </div>
     );

@@ -168,7 +168,7 @@ unsafe extern "system" fn event_callback(
   _: u32,
 ) {
   // List of window titles to ignore
-  static IGNORED_TITLES: &[&str] = &["EdgeBar - macos/macos", "Dropdown - EdgeBar", "Tauri App"];
+  static IGNORED_TITLES: &[&str] = &["EdgeBar - macos/macos", "Dropdown - EdgeBar", "Tauri App", "DevTools"];
 
   // Retrieve the window title
   let length = unsafe { GetWindowTextLengthW(hwnd) } + 1;
@@ -178,8 +178,8 @@ unsafe extern "system" fn event_callback(
   if copied_length > 0 {
     let window_title = String::from_utf16_lossy(&buffer[..copied_length as usize]);
 
-    // Ignore events with any of the specific titles (exact match)
-    if IGNORED_TITLES.iter().any(|t| window_title == *t) {
+    // Ignore events if the window title contains any ignored substring
+    if IGNORED_TITLES.iter().any(|t| window_title.contains(t)) {
       println!("Ignored window with title: {:?}", window_title);
       return;
     }

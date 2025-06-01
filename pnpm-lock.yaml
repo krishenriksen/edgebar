@@ -30,6 +30,9 @@ importers:
         specifier: ^1.9.7
         version: 1.9.7
     devDependencies:
+      terser:
+        specifier: ^5.39.2
+        version: 5.39.2
       typescript:
         specifier: 5.8.3
         version: 5.8.3

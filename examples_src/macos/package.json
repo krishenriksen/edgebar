@@ -12,6 +12,7 @@
     "solid-js": "^1.9.7"
   },
   "devDependencies": {
+    "terser": "^5.39.2",
     "typescript": "5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-solid": "^2.11.6"
