@@ -415,8 +415,8 @@ function App() {
       .format(date)
       .replace(/,/g, "");
 
-  function LeftPanel() {
-    return (
+  return (
+    <div class="app">
       <div class="left">
         <ul>
           {appSpecificOptions().map(({ name, items }: any, index: number) => (
@@ -448,11 +448,6 @@ function App() {
           ))}
         </ul>
       </div>
-    );
-  }
-
-  function RightPanel() {
-    return (
       <div class="right">
         <ul>
           {output.audio?.defaultPlaybackDevice && (
@@ -504,13 +499,6 @@ function App() {
           )}
         </ul>
       </div>
-    );
-  }
-
-  return (
-    <div class="app">
-      <LeftPanel />
-      <RightPanel />
     </div>
   );
 }
